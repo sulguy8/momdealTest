@@ -1,0 +1,99 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerAppMapper">
+	<sql id="selectColumns">
+		cua.CUA_NUM,		cua.CUI_NUM,		cua.CUA_TOKEN,		cua.CUA_TYPE,		DATE_FORMAT(cua.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cua.CRETIM,'%H:%i:%S') AS CRETIM
+,		cua.CREUSR,		DATE_FORMAT(cua.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cua.MODTIM,'%H:%i:%S') AS MODTIM,		cua.MODUSR,		cua.ACTIVE
+	
+	</sql>
+	<select id="selectCUAList" resultType="cua">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_APP cua  left join CUSTOMER_INFO cui on cui.CUI_NUM=cua.CUI_NUM		
+		<where>
+			<if test='cuaNum != null and cuaNum != ""'>
+ 				AND cua.CUA_NUM like concat('%',#{cuaNum},'%')
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND cua.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='cuaToken != null and cuaToken != ""'>
+ 				AND cua.CUA_TOKEN like concat('%',#{cuaToken},'%')
+			</if>
+			<if test='cuaType != null and cuaType != ""'>
+ 				AND cua.CUA_TYPE like concat('%',#{cuaType},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cua.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cua.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cua.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cua.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cua.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cua.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cua.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCUA" resultType="cua">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_APP cua  left join CUSTOMER_INFO cui on cui.CUI_NUM=cua.CUI_NUM
+		WHERE CUA_NUM = #{cuaNum}
+	</select>
+	<insert id="insertCUA" useGeneratedKeys="true" keyProperty="cuaNum" keyColumn="CUA_NUM">
+		INSERT INTO CUSTOMER_APP	
+		(
+ 			<if test="cuaToken != null and cuaToken != '' ">  CUA_TOKEN,</if>
+			<if test="cuaType != null and cuaType != '' ">  CUA_TYPE,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CUI_NUM,
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="cuaToken != null and cuaToken != '' ">  #{cuaToken},</if>
+			<if test="cuaType != null and cuaType != '' ">  #{cuaType},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cuiNum},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateCUA">
+		UPDATE CUSTOMER_APP cua 
+		<set>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="cuaToken != null and cuaToken != '' ">  CUA_TOKEN = #{cuaToken},</if>
+			<if test="cuaType != null and cuaType != '' ">  CUA_TYPE = #{cuaType},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cua.CUA_NUM  = #{cuaNum}
+	</update>
+	
+	<delete id="deleteCUA">
+		UPDATE CUSTOMER_APP	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CUA_NUM  = #{cuaNum}
+	</delete>
+</mapper>

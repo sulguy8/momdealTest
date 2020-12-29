@@ -1,0 +1,150 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CrawlingGoodsInfoMapper">
+	<sql id="selectColumns">
+		cgi.CGI_NUM,		cgi.CSP_NUM,		cgi.CCI_NUM,		cgi.CGI_KEY,		cgi.CGI_URL,		cgi.CGI_NAME
+,		cgi.CGI_QTY,		cgi.CGI_DESC,		cgi.CGI_PRICE,		cgi.CGI_DISPRICE,		cgi.CGI_SIMG_NAME
+,		cgi.CGI_MIMG_NAME,		DATE_FORMAT(cgi.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cgi.CRETIM,'%H:%i:%S') AS CRETIM,		cgi.CREUSR,		DATE_FORMAT(cgi.MODDAT,'%Y-%m-%d') AS MODDAT
+,		TIME_FORMAT(cgi.MODTIM,'%H:%i:%S') AS MODTIM,		cgi.MODUSR,		cgi.ACTIVE	
+	</sql>
+	<select id="selectCGIList" resultType="cgi">
+		SELECT <include refid="selectColumns"></include> FROM
+		CRAWLING_GOODS_INFO cgi 		
+		<where>
+			<if test='cgiNum != null and cgiNum != ""'>
+ 				AND cgi.CGI_NUM like concat('%',#{cgiNum},'%')
+			</if>
+			<if test='cspNum != null and cspNum != ""'>
+ 				AND cgi.CSP_NUM = #{cspNum}
+			</if>
+			<if test='cciNum != null and cciNum != ""'>
+ 				AND cgi.CCI_NUM = #{cciNum}
+			</if>
+			<if test='cgiKey != null and cgiKey != ""'>
+ 				AND cgi.CGI_KEY like concat('%',#{cgiKey},'%')
+			</if>
+			<if test='cgiUrl != null and cgiUrl != ""'>
+ 				AND cgi.CGI_URL like concat('%',#{cgiUrl},'%')
+			</if>
+			<if test='cgiName != null and cgiName != ""'>
+ 				AND cgi.CGI_NAME like concat('%',#{cgiName},'%')
+			</if>
+			<if test='cgiQty != null and cgiQty != ""'>
+ 				AND cgi.CGI_QTY like concat('%',#{cgiQty},'%')
+			</if>
+			<if test='cgiDesc != null and cgiDesc != ""'>
+ 				AND cgi.CGI_DESC like concat('%',#{cgiDesc},'%')
+			</if>
+			<if test='cgiPrice != null and cgiPrice != ""'>
+ 				AND cgi.CGI_PRICE like concat('%',#{cgiPrice},'%')
+			</if>
+			<if test='cgiDisprice != null and cgiDisprice != ""'>
+ 				AND cgi.CGI_DISPRICE like concat('%',#{cgiDisprice},'%')
+			</if>
+			<if test='cgiSimgName != null and cgiSimgName != ""'>
+ 				AND cgi.CGI_SIMG_NAME like concat('%',#{cgiSimgName},'%')
+			</if>
+			<if test='cgiMimgName != null and cgiMimgName != ""'>
+ 				AND cgi.CGI_MIMG_NAME like concat('%',#{cgiMimgName},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cgi.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cgi.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cgi.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cgi.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cgi.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cgi.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cgi.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCGI" resultType="cgi">
+		SELECT <include refid="selectColumns"></include> FROM CRAWLING_GOODS_INFO cgi 
+		WHERE CGI_NUM = #{cgiNum}
+	</select>
+	<insert id="insertCGI" useGeneratedKeys="true" keyProperty="cgiNum" keyColumn="CGI_NUM">
+		INSERT INTO CRAWLING_GOODS_INFO	
+		(
+ 			<if test="cspNum != null and cspNum != '' ">  CSP_NUM,</if>
+			<if test="cciNum != null and cciNum != '' ">  CCI_NUM,</if>
+			<if test="cgiKey != null and cgiKey != '' ">  CGI_KEY,</if>
+			<if test="cgiUrl != null and cgiUrl != '' ">  CGI_URL,</if>
+			<if test="cgiName != null and cgiName != '' ">  CGI_NAME,</if>
+			<if test="cgiQty != null and cgiQty != '' ">  CGI_QTY,</if>
+			<if test="cgiDesc != null and cgiDesc != '' ">  CGI_DESC,</if>
+			<if test="cgiDisprice != null and cgiDisprice != '' ">  CGI_DISPRICE,</if>
+			<if test="cgiSimgName != null and cgiSimgName != '' ">  CGI_SIMG_NAME,</if>
+			<if test="cgiMimgName != null and cgiMimgName != '' ">  CGI_MIMG_NAME,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CGI_PRICE,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="cspNum != null and cspNum != '' ">  #{cspNum},</if>
+			<if test="cciNum != null and cciNum != '' ">  #{cciNum},</if>
+			<if test="cgiKey != null and cgiKey != '' ">  #{cgiKey},</if>
+			<if test="cgiUrl != null and cgiUrl != '' ">  #{cgiUrl},</if>
+			<if test="cgiName != null and cgiName != '' ">  #{cgiName},</if>
+			<if test="cgiQty != null and cgiQty != '' ">  #{cgiQty},</if>
+			<if test="cgiDesc != null and cgiDesc != '' ">  #{cgiDesc},</if>
+			<if test="cgiDisprice != null and cgiDisprice != '' ">  #{cgiDisprice},</if>
+			<if test="cgiSimgName != null and cgiSimgName != '' ">  #{cgiSimgName},</if>
+			<if test="cgiMimgName != null and cgiMimgName != '' ">  #{cgiMimgName},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cgiPrice},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCGI">
+		UPDATE CRAWLING_GOODS_INFO cgi 
+		<set>
+			<if test="cspNum != null and cspNum != '' ">  CSP_NUM = #{cspNum},</if>
+			<if test="cciNum != null and cciNum != '' ">  CCI_NUM = #{cciNum},</if>
+			<if test="cgiKey != null and cgiKey != '' ">  CGI_KEY = #{cgiKey},</if>
+			<if test="cgiUrl != null and cgiUrl != '' ">  CGI_URL = #{cgiUrl},</if>
+			<if test="cgiName != null and cgiName != '' ">  CGI_NAME = #{cgiName},</if>
+			<if test="cgiQty != null and cgiQty != '' ">  CGI_QTY = #{cgiQty},</if>
+			<if test="cgiDesc != null and cgiDesc != '' ">  CGI_DESC = #{cgiDesc},</if>
+			<if test="cgiPrice != null and cgiPrice != '' ">  CGI_PRICE = #{cgiPrice},</if>
+			<if test="cgiDisprice != null and cgiDisprice != '' ">  CGI_DISPRICE = #{cgiDisprice},</if>
+			<if test="cgiSimgName != null and cgiSimgName != '' ">  CGI_SIMG_NAME = #{cgiSimgName},</if>
+			<if test="cgiMimgName != null and cgiMimgName != '' ">  CGI_MIMG_NAME = #{cgiMimgName},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cgi.CGI_NUM  = #{cgiNum}
+	</update>
+	
+	<delete id="deleteCGI">
+		UPDATE CRAWLING_GOODS_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CGI_NUM  = #{cgiNum}
+	</delete>
+</mapper>

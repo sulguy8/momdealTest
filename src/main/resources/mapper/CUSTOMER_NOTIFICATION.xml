@@ -1,0 +1,113 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerNotificationMapper">
+	<sql id="selectColumns">
+		cun.CUN_NUM,		cun.CUI_NUM,		cun.HOI_NUM,		cun.HOI_TYPE,		cun.CAI_TYPE,		cun.CUN_KEYWORD
+,		DATE_FORMAT(cun.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cun.CRETIM,'%H:%i:%S') AS CRETIM,		cun.CREUSR,		DATE_FORMAT(cun.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cun.MODTIM,'%H:%i:%S') AS MODTIM
+,		cun.MODUSR,		cun.ACTIVE	
+	</sql>
+	<select id="selectCUNList" resultType="cun">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_NOTIFICATION cun  left join CUSTOMER_INFO cui on cui.CUI_NUM=cun.CUI_NUM left join HOTDEAL_INFO hoi on hoi.HOI_NUM=cun.HOI_NUM		
+		<where>
+			<if test='cunNum != null and cunNum != ""'>
+ 				AND cun.CUN_NUM like concat('%',#{cunNum},'%')
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND cun.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='hoiNum != null and hoiNum != ""'>
+ 				AND cun.HOI_NUM = #{hoiNum}
+			</if>
+			<if test='hoiType != null and hoiType != ""'>
+ 				AND cun.HOI_TYPE = #{hoiType}
+			</if>
+			<if test='caiType != null and caiType != ""'>
+ 				AND cun.CAI_TYPE = #{caiType}
+			</if>
+			<if test='cunKeyword != null and cunKeyword != ""'>
+ 				AND cun.CUN_KEYWORD like concat('%',#{cunKeyword},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cun.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cun.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cun.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cun.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cun.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cun.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cun.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCUN" resultType="cun">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_NOTIFICATION cun  left join CUSTOMER_INFO cui on cui.CUI_NUM=cun.CUI_NUM left join HOTDEAL_INFO hoi on hoi.HOI_NUM=cun.HOI_NUM
+		WHERE CUN_NUM = #{cunNum}
+	</select>
+	<insert id="insertCUN" useGeneratedKeys="true" keyProperty="cunNum" keyColumn="CUN_NUM">
+		INSERT INTO CUSTOMER_NOTIFICATION	
+		(
+ 			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM,</if>
+			<if test="hoiNum != null and hoiNum != '' ">  HOI_NUM,</if>
+			<if test="hoiType != null and hoiType != '' ">  HOI_TYPE,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CAI_TYPE,
+	CUN_KEYWORD,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="cuiNum != null and cuiNum != '' ">  #{cuiNum},</if>
+			<if test="hoiNum != null and hoiNum != '' ">  #{hoiNum},</if>
+			<if test="hoiType != null and hoiType != '' ">  #{hoiType},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{caiType},
+		#{cunKeyword},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCUN">
+		UPDATE CUSTOMER_NOTIFICATION cun 
+		<set>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="hoiNum != null and hoiNum != '' ">  HOI_NUM = #{hoiNum},</if>
+			<if test="hoiType != null and hoiType != '' ">  HOI_TYPE = #{hoiType},</if>
+			<if test="caiType != null and caiType != '' ">  CAI_TYPE = #{caiType},</if>
+			<if test="cunKeyword != null and cunKeyword != '' ">  CUN_KEYWORD = #{cunKeyword},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cun.CUN_NUM  = #{cunNum}
+	</update>
+	
+	<delete id="deleteCUN">
+		UPDATE CUSTOMER_NOTIFICATION	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CUN_NUM  = #{cunNum}
+	</delete>
+</mapper>

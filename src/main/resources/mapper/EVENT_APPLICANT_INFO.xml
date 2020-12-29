@@ -1,0 +1,107 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.EventApplicantInfoMapper">
+	<sql id="selectColumns">
+		eai.EAI_NUM,		eai.EAI_STATUS,		eai.EAI_TITLE,		eai.EAI_CONTENT,		eai.EAI_MISSION,		DATE_FORMAT(eai.CREDAT,'%Y-%m-%d') AS CREDAT
+,		TIME_FORMAT(eai.CRETIM,'%H:%i:%S') AS CRETIM,		eai.CREUSR,		DATE_FORMAT(eai.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(eai.MODTIM,'%H:%i:%S') AS MODTIM,		eai.MODUSR
+,		eai.ACTIVE	
+	</sql>
+	<select id="selectEAIList" resultType="eai">
+		SELECT <include refid="selectColumns"></include> FROM
+		EVENT_APPLICANT_INFO eai 		
+		<where>
+			<if test='eaiNum != null and eaiNum != ""'>
+ 				AND eai.EAI_NUM like concat('%',#{eaiNum},'%')
+			</if>
+			<if test='eaiStatus != null and eaiStatus != ""'>
+ 				AND eai.EAI_STATUS like concat('%',#{eaiStatus},'%')
+			</if>
+			<if test='eaiTitle != null and eaiTitle != ""'>
+ 				AND eai.EAI_TITLE like concat('%',#{eaiTitle},'%')
+			</if>
+			<if test='eaiContent != null and eaiContent != ""'>
+ 				AND eai.EAI_CONTENT like concat('%',#{eaiContent},'%')
+			</if>
+			<if test='eaiMission != null and eaiMission != ""'>
+ 				AND eai.EAI_MISSION like concat('%',#{eaiMission},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND eai.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND eai.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND eai.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND eai.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND eai.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND eai.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND eai.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectEAI" resultType="eai">
+		SELECT <include refid="selectColumns"></include> FROM EVENT_APPLICANT_INFO eai 
+		WHERE EAI_NUM = #{eaiNum}
+	</select>
+	<insert id="insertEAI" useGeneratedKeys="true" keyProperty="eaiNum" keyColumn="EAI_NUM">
+		INSERT INTO EVENT_APPLICANT_INFO	
+		(
+ 			<if test="eaiStatus != null and eaiStatus != '' ">  EAI_STATUS,</if>
+			<if test="eaiTitle != null and eaiTitle != '' ">  EAI_TITLE,</if>
+			<if test="eaiContent != null and eaiContent != '' ">  EAI_CONTENT,</if>
+			<if test="eaiMission != null and eaiMission != '' ">  EAI_MISSION,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="eaiStatus != null and eaiStatus != '' ">  #{eaiStatus},</if>
+			<if test="eaiTitle != null and eaiTitle != '' ">  #{eaiTitle},</if>
+			<if test="eaiContent != null and eaiContent != '' ">  #{eaiContent},</if>
+			<if test="eaiMission != null and eaiMission != '' ">  #{eaiMission},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateEAI">
+		UPDATE EVENT_APPLICANT_INFO eai 
+		<set>
+			<if test="eaiStatus != null and eaiStatus != '' ">  EAI_STATUS = #{eaiStatus},</if>
+			<if test="eaiTitle != null and eaiTitle != '' ">  EAI_TITLE = #{eaiTitle},</if>
+			<if test="eaiContent != null and eaiContent != '' ">  EAI_CONTENT = #{eaiContent},</if>
+			<if test="eaiMission != null and eaiMission != '' ">  EAI_MISSION = #{eaiMission},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  eai.EAI_NUM  = #{eaiNum}
+	</update>
+	
+	<delete id="deleteEAI">
+		UPDATE EVENT_APPLICANT_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  EAI_NUM  = #{eaiNum}
+	</delete>
+</mapper>

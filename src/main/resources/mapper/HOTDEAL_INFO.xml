@@ -1,0 +1,260 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.HotdealInfoMapper">
+	<sql id="selectColumns">
+		hoi.HOI_NUM,		hoi.CAI_NUM,		hoi.CUI_NUM,		hoi.SHI_NUM,		hoi.HOI_TYPE,		hoi.HOI_BEST
+,		hoi.HOI_STATUS,		hoi.HOI_TITLE,		hoi.HOI_CONTENT,		hoi.HOI_SDATE,		hoi.HOI_STIME
+,		hoi.HOI_EDATE,		hoi.HOI_ETIME,		hoi.HOI_RECOMMEND1_CNT,		hoi.HOI_RECOMMEND2_CNT,		hoi.HOI_RECOMMEND3_CNT
+,		hoi.HOI_SHARE_CNT,		hoi.HOI_ALARM_CNT,		hoi.HOI_VIEW_CNT,		hoi.HOI_EXTLINK_CNT,		hoi.HOI_IMG1_NAME
+,		hoi.HOI_IMG2_NAME,		hoi.HOI_IMG3_NAME,		hoi.HOI_IMG4_NAME,		hoi.HOI_IMG5_NAME,		hoi.HOI_IMG6_NAME
+,		hoi.HOI_IMG7_NAME,		hoi.HOI_IMG8_NAME,		hoi.HOI_IMG9_NAME,		hoi.HOI_IMG10_NAME,		DATE_FORMAT(hoi.CREDAT,'%Y-%m-%d') AS CREDAT
+,		TIME_FORMAT(hoi.CRETIM,'%H:%i:%S') AS CRETIM,		hoi.CREUSR,		DATE_FORMAT(hoi.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(hoi.MODTIM,'%H:%i:%S') AS MODTIM,		hoi.MODUSR
+,		hoi.ACTIVE	
+	</sql>
+	<select id="selectHOIList" resultType="hoi">
+		SELECT <include refid="selectColumns"></include> FROM
+		HOTDEAL_INFO hoi  left join CATEGORY_INFO cai on cai.CAI_NUM=hoi.CAI_NUM left join CUSTOMER_INFO cui on cui.CUI_NUM=hoi.CUI_NUM left join SHOP_INFO shi on shi.SHI_NUM=hoi.SHI_NUM		
+		<where>
+			<if test='hoiNum != null and hoiNum != ""'>
+ 				AND hoi.HOI_NUM like concat('%',#{hoiNum},'%')
+			</if>
+			<if test='caiNum != null and caiNum != ""'>
+ 				AND hoi.CAI_NUM = #{caiNum}
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND hoi.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='shiNum != null and shiNum != ""'>
+ 				AND hoi.SHI_NUM = #{shiNum}
+			</if>
+			<if test='hoiType != null and hoiType != ""'>
+ 				AND hoi.HOI_TYPE = #{hoiType}
+			</if>
+			<if test='hoiBest != null and hoiBest != ""'>
+ 				AND hoi.HOI_BEST = #{hoiBest}
+			</if>
+			<if test='hoiStatus != null and hoiStatus != ""'>
+ 				AND hoi.HOI_STATUS = #{hoiStatus}
+			</if>
+			<if test='hoiTitle != null and hoiTitle != ""'>
+ 				AND hoi.HOI_TITLE like concat('%',#{hoiTitle},'%')
+			</if>
+			<if test='hoiContent != null and hoiContent != ""'>
+ 				AND hoi.HOI_CONTENT like concat('%',#{hoiContent},'%')
+			</if>
+			<if test='hoiSdate != null and hoiSdate != ""'>
+ 				AND hoi.HOI_SDATE like concat('%',#{hoiSdate},'%')
+			</if>
+			<if test='hoiStime != null and hoiStime != ""'>
+ 				AND hoi.HOI_STIME like concat('%',#{hoiStime},'%')
+			</if>
+			<if test='hoiEdate != null and hoiEdate != ""'>
+ 				AND hoi.HOI_EDATE like concat('%',#{hoiEdate},'%')
+			</if>
+			<if test='hoiEtime != null and hoiEtime != ""'>
+ 				AND hoi.HOI_ETIME like concat('%',#{hoiEtime},'%')
+			</if>
+			<if test='hoiRecommend1Cnt != null and hoiRecommend1Cnt != ""'>
+ 				AND hoi.HOI_RECOMMEND1_CNT = #{hoiRecommend1Cnt}
+			</if>
+			<if test='hoiRecommend2Cnt != null and hoiRecommend2Cnt != ""'>
+ 				AND hoi.HOI_RECOMMEND2_CNT = #{hoiRecommend2Cnt}
+			</if>
+			<if test='hoiRecommend3Cnt != null and hoiRecommend3Cnt != ""'>
+ 				AND hoi.HOI_RECOMMEND3_CNT = #{hoiRecommend3Cnt}
+			</if>
+			<if test='hoiShareCnt != null and hoiShareCnt != ""'>
+ 				AND hoi.HOI_SHARE_CNT = #{hoiShareCnt}
+			</if>
+			<if test='hoiAlarmCnt != null and hoiAlarmCnt != ""'>
+ 				AND hoi.HOI_ALARM_CNT = #{hoiAlarmCnt}
+			</if>
+			<if test='hoiViewCnt != null and hoiViewCnt != ""'>
+ 				AND hoi.HOI_VIEW_CNT = #{hoiViewCnt}
+			</if>
+			<if test='hoiExtlinkCnt != null and hoiExtlinkCnt != ""'>
+ 				AND hoi.HOI_EXTLINK_CNT = #{hoiExtlinkCnt}
+			</if>
+			<if test='hoiImg1Name != null and hoiImg1Name != ""'>
+ 				AND hoi.HOI_IMG1_NAME like concat('%',#{hoiImg1Name},'%')
+			</if>
+			<if test='hoiImg2Name != null and hoiImg2Name != ""'>
+ 				AND hoi.HOI_IMG2_NAME like concat('%',#{hoiImg2Name},'%')
+			</if>
+			<if test='hoiImg3Name != null and hoiImg3Name != ""'>
+ 				AND hoi.HOI_IMG3_NAME like concat('%',#{hoiImg3Name},'%')
+			</if>
+			<if test='hoiImg4Name != null and hoiImg4Name != ""'>
+ 				AND hoi.HOI_IMG4_NAME like concat('%',#{hoiImg4Name},'%')
+			</if>
+			<if test='hoiImg5Name != null and hoiImg5Name != ""'>
+ 				AND hoi.HOI_IMG5_NAME like concat('%',#{hoiImg5Name},'%')
+			</if>
+			<if test='hoiImg6Name != null and hoiImg6Name != ""'>
+ 				AND hoi.HOI_IMG6_NAME like concat('%',#{hoiImg6Name},'%')
+			</if>
+			<if test='hoiImg7Name != null and hoiImg7Name != ""'>
+ 				AND hoi.HOI_IMG7_NAME like concat('%',#{hoiImg7Name},'%')
+			</if>
+			<if test='hoiImg8Name != null and hoiImg8Name != ""'>
+ 				AND hoi.HOI_IMG8_NAME like concat('%',#{hoiImg8Name},'%')
+			</if>
+			<if test='hoiImg9Name != null and hoiImg9Name != ""'>
+ 				AND hoi.HOI_IMG9_NAME like concat('%',#{hoiImg9Name},'%')
+			</if>
+			<if test='hoiImg10Name != null and hoiImg10Name != ""'>
+ 				AND hoi.HOI_IMG10_NAME like concat('%',#{hoiImg10Name},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND hoi.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND hoi.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND hoi.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND hoi.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND hoi.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND hoi.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND hoi.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectHOI" resultType="hoi">
+		SELECT <include refid="selectColumns"></include> FROM HOTDEAL_INFO hoi  left join CATEGORY_INFO cai on cai.CAI_NUM=hoi.CAI_NUM left join CUSTOMER_INFO cui on cui.CUI_NUM=hoi.CUI_NUM left join SHOP_INFO shi on shi.SHI_NUM=hoi.SHI_NUM
+		WHERE HOI_NUM = #{hoiNum}
+	</select>
+	<insert id="insertHOI" useGeneratedKeys="true" keyProperty="hoiNum" keyColumn="HOI_NUM">
+		INSERT INTO HOTDEAL_INFO	
+		(
+ 			<if test="caiNum != null and caiNum != '' ">  CAI_NUM,</if>
+			<if test="shiNum != null and shiNum != '' ">  SHI_NUM,</if>
+			<if test="hoiType != null and hoiType != '' ">  HOI_TYPE,</if>
+			<if test="hoiBest != null and hoiBest != '' ">  HOI_BEST,</if>
+			<if test="hoiStatus != null and hoiStatus != '' ">  HOI_STATUS,</if>
+			<if test="hoiTitle != null and hoiTitle != '' ">  HOI_TITLE,</if>
+			<if test="hoiContent != null and hoiContent != '' ">  HOI_CONTENT,</if>
+			<if test="hoiSdate != null and hoiSdate != '' ">  HOI_SDATE,</if>
+			<if test="hoiStime != null and hoiStime != '' ">  HOI_STIME,</if>
+			<if test="hoiEdate != null and hoiEdate != '' ">  HOI_EDATE,</if>
+			<if test="hoiEtime != null and hoiEtime != '' ">  HOI_ETIME,</if>
+			<if test="hoiImg1Name != null and hoiImg1Name != '' ">  HOI_IMG1_NAME,</if>
+			<if test="hoiImg2Name != null and hoiImg2Name != '' ">  HOI_IMG2_NAME,</if>
+			<if test="hoiImg3Name != null and hoiImg3Name != '' ">  HOI_IMG3_NAME,</if>
+			<if test="hoiImg4Name != null and hoiImg4Name != '' ">  HOI_IMG4_NAME,</if>
+			<if test="hoiImg5Name != null and hoiImg5Name != '' ">  HOI_IMG5_NAME,</if>
+			<if test="hoiImg6Name != null and hoiImg6Name != '' ">  HOI_IMG6_NAME,</if>
+			<if test="hoiImg7Name != null and hoiImg7Name != '' ">  HOI_IMG7_NAME,</if>
+			<if test="hoiImg8Name != null and hoiImg8Name != '' ">  HOI_IMG8_NAME,</if>
+			<if test="hoiImg9Name != null and hoiImg9Name != '' ">  HOI_IMG9_NAME,</if>
+			<if test="hoiImg10Name != null and hoiImg10Name != '' ">  HOI_IMG10_NAME,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CUI_NUM,
+	HOI_RECOMMEND1_CNT,
+	HOI_RECOMMEND2_CNT,
+	HOI_RECOMMEND3_CNT,
+	HOI_SHARE_CNT,
+	HOI_ALARM_CNT,
+	HOI_VIEW_CNT,
+	HOI_EXTLINK_CNT,
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="caiNum != null and caiNum != '' ">  #{caiNum},</if>
+			<if test="shiNum != null and shiNum != '' ">  #{shiNum},</if>
+			<if test="hoiType != null and hoiType != '' ">  #{hoiType},</if>
+			<if test="hoiBest != null and hoiBest != '' ">  #{hoiBest},</if>
+			<if test="hoiStatus != null and hoiStatus != '' ">  #{hoiStatus},</if>
+			<if test="hoiTitle != null and hoiTitle != '' ">  #{hoiTitle},</if>
+			<if test="hoiContent != null and hoiContent != '' ">  #{hoiContent},</if>
+			<if test="hoiSdate != null and hoiSdate != '' ">  #{hoiSdate},</if>
+			<if test="hoiStime != null and hoiStime != '' ">  #{hoiStime},</if>
+			<if test="hoiEdate != null and hoiEdate != '' ">  #{hoiEdate},</if>
+			<if test="hoiEtime != null and hoiEtime != '' ">  #{hoiEtime},</if>
+			<if test="hoiImg1Name != null and hoiImg1Name != '' ">  #{hoiImg1Name},</if>
+			<if test="hoiImg2Name != null and hoiImg2Name != '' ">  #{hoiImg2Name},</if>
+			<if test="hoiImg3Name != null and hoiImg3Name != '' ">  #{hoiImg3Name},</if>
+			<if test="hoiImg4Name != null and hoiImg4Name != '' ">  #{hoiImg4Name},</if>
+			<if test="hoiImg5Name != null and hoiImg5Name != '' ">  #{hoiImg5Name},</if>
+			<if test="hoiImg6Name != null and hoiImg6Name != '' ">  #{hoiImg6Name},</if>
+			<if test="hoiImg7Name != null and hoiImg7Name != '' ">  #{hoiImg7Name},</if>
+			<if test="hoiImg8Name != null and hoiImg8Name != '' ">  #{hoiImg8Name},</if>
+			<if test="hoiImg9Name != null and hoiImg9Name != '' ">  #{hoiImg9Name},</if>
+			<if test="hoiImg10Name != null and hoiImg10Name != '' ">  #{hoiImg10Name},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cuiNum},
+		#{hoiRecommend1Cnt},
+		#{hoiRecommend2Cnt},
+		#{hoiRecommend3Cnt},
+		#{hoiShareCnt},
+		#{hoiAlarmCnt},
+		#{hoiViewCnt},
+		#{hoiExtlinkCnt},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateHOI">
+		UPDATE HOTDEAL_INFO hoi 
+		<set>
+			<if test="caiNum != null and caiNum != '' ">  CAI_NUM = #{caiNum},</if>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="shiNum != null and shiNum != '' ">  SHI_NUM = #{shiNum},</if>
+			<if test="hoiType != null and hoiType != '' ">  HOI_TYPE = #{hoiType},</if>
+			<if test="hoiBest != null and hoiBest != '' ">  HOI_BEST = #{hoiBest},</if>
+			<if test="hoiStatus != null and hoiStatus != '' ">  HOI_STATUS = #{hoiStatus},</if>
+			<if test="hoiTitle != null and hoiTitle != '' ">  HOI_TITLE = #{hoiTitle},</if>
+			<if test="hoiContent != null and hoiContent != '' ">  HOI_CONTENT = #{hoiContent},</if>
+			<if test="hoiSdate != null and hoiSdate != '' ">  HOI_SDATE = #{hoiSdate},</if>
+			<if test="hoiStime != null and hoiStime != '' ">  HOI_STIME = #{hoiStime},</if>
+			<if test="hoiEdate != null and hoiEdate != '' ">  HOI_EDATE = #{hoiEdate},</if>
+			<if test="hoiEtime != null and hoiEtime != '' ">  HOI_ETIME = #{hoiEtime},</if>
+			<if test="hoiRecommend1Cnt != null and hoiRecommend1Cnt != '' ">  HOI_RECOMMEND1_CNT = #{hoiRecommend1Cnt},</if>
+			<if test="hoiRecommend2Cnt != null and hoiRecommend2Cnt != '' ">  HOI_RECOMMEND2_CNT = #{hoiRecommend2Cnt},</if>
+			<if test="hoiRecommend3Cnt != null and hoiRecommend3Cnt != '' ">  HOI_RECOMMEND3_CNT = #{hoiRecommend3Cnt},</if>
+			<if test="hoiShareCnt != null and hoiShareCnt != '' ">  HOI_SHARE_CNT = #{hoiShareCnt},</if>
+			<if test="hoiAlarmCnt != null and hoiAlarmCnt != '' ">  HOI_ALARM_CNT = #{hoiAlarmCnt},</if>
+			<if test="hoiViewCnt != null and hoiViewCnt != '' ">  HOI_VIEW_CNT = #{hoiViewCnt},</if>
+			<if test="hoiExtlinkCnt != null and hoiExtlinkCnt != '' ">  HOI_EXTLINK_CNT = #{hoiExtlinkCnt},</if>
+			<if test="hoiImg1Name != null and hoiImg1Name != '' ">  HOI_IMG1_NAME = #{hoiImg1Name},</if>
+			<if test="hoiImg2Name != null and hoiImg2Name != '' ">  HOI_IMG2_NAME = #{hoiImg2Name},</if>
+			<if test="hoiImg3Name != null and hoiImg3Name != '' ">  HOI_IMG3_NAME = #{hoiImg3Name},</if>
+			<if test="hoiImg4Name != null and hoiImg4Name != '' ">  HOI_IMG4_NAME = #{hoiImg4Name},</if>
+			<if test="hoiImg5Name != null and hoiImg5Name != '' ">  HOI_IMG5_NAME = #{hoiImg5Name},</if>
+			<if test="hoiImg6Name != null and hoiImg6Name != '' ">  HOI_IMG6_NAME = #{hoiImg6Name},</if>
+			<if test="hoiImg7Name != null and hoiImg7Name != '' ">  HOI_IMG7_NAME = #{hoiImg7Name},</if>
+			<if test="hoiImg8Name != null and hoiImg8Name != '' ">  HOI_IMG8_NAME = #{hoiImg8Name},</if>
+			<if test="hoiImg9Name != null and hoiImg9Name != '' ">  HOI_IMG9_NAME = #{hoiImg9Name},</if>
+			<if test="hoiImg10Name != null and hoiImg10Name != '' ">  HOI_IMG10_NAME = #{hoiImg10Name},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  hoi.HOI_NUM  = #{hoiNum}
+	</update>
+	
+	<delete id="deleteHOI">
+		UPDATE HOTDEAL_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  HOI_NUM  = #{hoiNum}
+	</delete>
+</mapper>

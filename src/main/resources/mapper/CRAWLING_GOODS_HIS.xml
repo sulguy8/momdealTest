@@ -1,0 +1,144 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CrawlingGoodsHisMapper">
+	<sql id="selectColumns">
+		cgh.CGH_NUM,		cgh.CGI_NUM,		cgh.CGH_KEY,		cgh.CGH_URL,		cgh.CGH_NAME,		cgh.CGH_QTY
+,		cgh.CGH_DESC,		cgh.CGH_PRICE,		cgh.CGH_DISPRICE,		cgh.CGH_SIMG_NAME,		cgh.CGH_MIMG_NAME
+,		DATE_FORMAT(cgh.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cgh.CRETIM,'%H:%i:%S') AS CRETIM,		cgh.CREUSR,		DATE_FORMAT(cgh.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cgh.MODTIM,'%H:%i:%S') AS MODTIM
+,		cgh.MODUSR,		cgh.ACTIVE	
+	</sql>
+	<select id="selectCGHList" resultType="cgh">
+		SELECT <include refid="selectColumns"></include> FROM
+		CRAWLING_GOODS_HIS cgh  left join CRAWLING_GOODS_INFO cgi on cgi.CGI_NUM=cgh.CGI_NUM		
+		<where>
+			<if test='cghNum != null and cghNum != ""'>
+ 				AND cgh.CGH_NUM like concat('%',#{cghNum},'%')
+			</if>
+			<if test='cgiNum != null and cgiNum != ""'>
+ 				AND cgh.CGI_NUM = #{cgiNum}
+			</if>
+			<if test='cghKey != null and cghKey != ""'>
+ 				AND cgh.CGH_KEY like concat('%',#{cghKey},'%')
+			</if>
+			<if test='cghUrl != null and cghUrl != ""'>
+ 				AND cgh.CGH_URL like concat('%',#{cghUrl},'%')
+			</if>
+			<if test='cghName != null and cghName != ""'>
+ 				AND cgh.CGH_NAME like concat('%',#{cghName},'%')
+			</if>
+			<if test='cghQty != null and cghQty != ""'>
+ 				AND cgh.CGH_QTY like concat('%',#{cghQty},'%')
+			</if>
+			<if test='cghDesc != null and cghDesc != ""'>
+ 				AND cgh.CGH_DESC like concat('%',#{cghDesc},'%')
+			</if>
+			<if test='cghPrice != null and cghPrice != ""'>
+ 				AND cgh.CGH_PRICE like concat('%',#{cghPrice},'%')
+			</if>
+			<if test='cghDisprice != null and cghDisprice != ""'>
+ 				AND cgh.CGH_DISPRICE like concat('%',#{cghDisprice},'%')
+			</if>
+			<if test='cghSimgName != null and cghSimgName != ""'>
+ 				AND cgh.CGH_SIMG_NAME like concat('%',#{cghSimgName},'%')
+			</if>
+			<if test='cghMimgName != null and cghMimgName != ""'>
+ 				AND cgh.CGH_MIMG_NAME like concat('%',#{cghMimgName},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cgh.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cgh.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cgh.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cgh.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cgh.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cgh.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cgh.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCGH" resultType="cgh">
+		SELECT <include refid="selectColumns"></include> FROM CRAWLING_GOODS_HIS cgh  left join CRAWLING_GOODS_INFO cgi on cgi.CGI_NUM=cgh.CGI_NUM
+		WHERE CGH_NUM = #{cghNum}
+	</select>
+	<insert id="insertCGH" useGeneratedKeys="true" keyProperty="cghNum" keyColumn="CGH_NUM">
+		INSERT INTO CRAWLING_GOODS_HIS	
+		(
+ 			<if test="cgiNum != null and cgiNum != '' ">  CGI_NUM,</if>
+			<if test="cghKey != null and cghKey != '' ">  CGH_KEY,</if>
+			<if test="cghUrl != null and cghUrl != '' ">  CGH_URL,</if>
+			<if test="cghName != null and cghName != '' ">  CGH_NAME,</if>
+			<if test="cghQty != null and cghQty != '' ">  CGH_QTY,</if>
+			<if test="cghDesc != null and cghDesc != '' ">  CGH_DESC,</if>
+			<if test="cghDisprice != null and cghDisprice != '' ">  CGH_DISPRICE,</if>
+			<if test="cghSimgName != null and cghSimgName != '' ">  CGH_SIMG_NAME,</if>
+			<if test="cghMimgName != null and cghMimgName != '' ">  CGH_MIMG_NAME,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CGH_PRICE,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="cgiNum != null and cgiNum != '' ">  #{cgiNum},</if>
+			<if test="cghKey != null and cghKey != '' ">  #{cghKey},</if>
+			<if test="cghUrl != null and cghUrl != '' ">  #{cghUrl},</if>
+			<if test="cghName != null and cghName != '' ">  #{cghName},</if>
+			<if test="cghQty != null and cghQty != '' ">  #{cghQty},</if>
+			<if test="cghDesc != null and cghDesc != '' ">  #{cghDesc},</if>
+			<if test="cghDisprice != null and cghDisprice != '' ">  #{cghDisprice},</if>
+			<if test="cghSimgName != null and cghSimgName != '' ">  #{cghSimgName},</if>
+			<if test="cghMimgName != null and cghMimgName != '' ">  #{cghMimgName},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cghPrice},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCGH">
+		UPDATE CRAWLING_GOODS_HIS cgh 
+		<set>
+			<if test="cgiNum != null and cgiNum != '' ">  CGI_NUM = #{cgiNum},</if>
+			<if test="cghKey != null and cghKey != '' ">  CGH_KEY = #{cghKey},</if>
+			<if test="cghUrl != null and cghUrl != '' ">  CGH_URL = #{cghUrl},</if>
+			<if test="cghName != null and cghName != '' ">  CGH_NAME = #{cghName},</if>
+			<if test="cghQty != null and cghQty != '' ">  CGH_QTY = #{cghQty},</if>
+			<if test="cghDesc != null and cghDesc != '' ">  CGH_DESC = #{cghDesc},</if>
+			<if test="cghPrice != null and cghPrice != '' ">  CGH_PRICE = #{cghPrice},</if>
+			<if test="cghDisprice != null and cghDisprice != '' ">  CGH_DISPRICE = #{cghDisprice},</if>
+			<if test="cghSimgName != null and cghSimgName != '' ">  CGH_SIMG_NAME = #{cghSimgName},</if>
+			<if test="cghMimgName != null and cghMimgName != '' ">  CGH_MIMG_NAME = #{cghMimgName},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cgh.CGH_NUM  = #{cghNum}
+	</update>
+	
+	<delete id="deleteCGH">
+		UPDATE CRAWLING_GOODS_HIS	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CGH_NUM  = #{cghNum}
+	</delete>
+</mapper>

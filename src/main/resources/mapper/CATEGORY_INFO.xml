@@ -1,0 +1,117 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CategoryInfoMapper">
+	<sql id="selectColumns">
+		cai.CAI_NUM,		cai.CAI_TYPE,		cai.CAI_DEP1,		cai.CAI_DEP2,		cai.CAI_DEP3,		cai.CAI_DEP4
+,		cai.CAI_DEP5,		DATE_FORMAT(cai.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cai.CRETIM,'%H:%i:%S') AS CRETIM,		cai.CREUSR,		DATE_FORMAT(cai.MODDAT,'%Y-%m-%d') AS MODDAT
+,		TIME_FORMAT(cai.MODTIM,'%H:%i:%S') AS MODTIM,		cai.MODUSR,		cai.ACTIVE	
+	</sql>
+	<select id="selectCAIList" resultType="cai">
+		SELECT <include refid="selectColumns"></include> FROM
+		CATEGORY_INFO cai 		
+		<where>
+			<if test='caiNum != null and caiNum != ""'>
+ 				AND cai.CAI_NUM like concat('%',#{caiNum},'%')
+			</if>
+			<if test='caiType != null and caiType != ""'>
+ 				AND cai.CAI_TYPE like concat('%',#{caiType},'%')
+			</if>
+			<if test='caiDep1 != null and caiDep1 != ""'>
+ 				AND cai.CAI_DEP1 like concat('%',#{caiDep1},'%')
+			</if>
+			<if test='caiDep2 != null and caiDep2 != ""'>
+ 				AND cai.CAI_DEP2 like concat('%',#{caiDep2},'%')
+			</if>
+			<if test='caiDep3 != null and caiDep3 != ""'>
+ 				AND cai.CAI_DEP3 like concat('%',#{caiDep3},'%')
+			</if>
+			<if test='caiDep4 != null and caiDep4 != ""'>
+ 				AND cai.CAI_DEP4 like concat('%',#{caiDep4},'%')
+			</if>
+			<if test='caiDep5 != null and caiDep5 != ""'>
+ 				AND cai.CAI_DEP5 like concat('%',#{caiDep5},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cai.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cai.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cai.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cai.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cai.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cai.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cai.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCAI" resultType="cai">
+		SELECT <include refid="selectColumns"></include> FROM CATEGORY_INFO cai 
+		WHERE CAI_NUM = #{caiNum}
+	</select>
+	<insert id="insertCAI" useGeneratedKeys="true" keyProperty="caiNum" keyColumn="CAI_NUM">
+		INSERT INTO CATEGORY_INFO	
+		(
+ 			<if test="caiDep1 != null and caiDep1 != '' ">  CAI_DEP1,</if>
+			<if test="caiDep2 != null and caiDep2 != '' ">  CAI_DEP2,</if>
+			<if test="caiDep3 != null and caiDep3 != '' ">  CAI_DEP3,</if>
+			<if test="caiDep4 != null and caiDep4 != '' ">  CAI_DEP4,</if>
+			<if test="caiDep5 != null and caiDep5 != '' ">  CAI_DEP5,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CAI_TYPE,
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="caiDep1 != null and caiDep1 != '' ">  #{caiDep1},</if>
+			<if test="caiDep2 != null and caiDep2 != '' ">  #{caiDep2},</if>
+			<if test="caiDep3 != null and caiDep3 != '' ">  #{caiDep3},</if>
+			<if test="caiDep4 != null and caiDep4 != '' ">  #{caiDep4},</if>
+			<if test="caiDep5 != null and caiDep5 != '' ">  #{caiDep5},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{caiType},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateCAI">
+		UPDATE CATEGORY_INFO cai 
+		<set>
+			<if test="caiType != null and caiType != '' ">  CAI_TYPE = #{caiType},</if>
+			<if test="caiDep1 != null and caiDep1 != '' ">  CAI_DEP1 = #{caiDep1},</if>
+			<if test="caiDep2 != null and caiDep2 != '' ">  CAI_DEP2 = #{caiDep2},</if>
+			<if test="caiDep3 != null and caiDep3 != '' ">  CAI_DEP3 = #{caiDep3},</if>
+			<if test="caiDep4 != null and caiDep4 != '' ">  CAI_DEP4 = #{caiDep4},</if>
+			<if test="caiDep5 != null and caiDep5 != '' ">  CAI_DEP5 = #{caiDep5},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cai.CAI_NUM  = #{caiNum}
+	</update>
+	
+	<delete id="deleteCAI">
+		UPDATE CATEGORY_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CAI_NUM  = #{caiNum}
+	</delete>
+</mapper>

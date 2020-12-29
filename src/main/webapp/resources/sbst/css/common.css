@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+.rt-sticky{
+    position:sticky;
+    top:0;
+    z-index:999;
+    background-color:white;
+}
+body {
+	line-height: 0.8 !important;
+}
+thead>tr {
+	line-height: 15px;
+}
+th, td { 
+	white-space: nowrap; 
+}
+div.dataTables_wrapper {
+	margin: 0 auto;
+}
+div.container {
+	width: 80%;
+}
+footer.sticky-footer{
+	height : 40px;
+}
+.card-body {
+	padding: 1.0rem;
+}
+#wrapper #content-wrapper {
+	padding-bottom : 0.2rem;
+}
+.search{
+    font-size: 0.8em;
+    padding: 0.5em;
+    border-radius: 1em;
+    font-family: sans-serif;
+	text-align:right;
+}
+
+.search>label, .search>input{
+    font-size: inherit;
+    padding: 0.2em;
+    margin: 0.2em 0.2em;
+    /* the following ensures they're all using the same box-model for rendering */
+    -moz-box-sizing: content-box; /* or `border-box` */
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+div[data-check]{
+display:inline-block;
+border-style:inset;
+border-width:thin; 
+padding: 5px; 
+line-height: auto ;
+
+padding-bottom: 0px;
+}

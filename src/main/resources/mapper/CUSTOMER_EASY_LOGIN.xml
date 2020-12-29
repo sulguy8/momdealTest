@@ -1,0 +1,111 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerEasyLoginMapper">
+	<sql id="selectColumns">
+		cel.CEL_NUM,		cel.CEL_TYPE,		cel.CEL_ID,		cel.CUI_NUM,		cel.CEL_EMAIL,		cel.CEL_NAME
+,		DATE_FORMAT(cel.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cel.CRETIM,'%H:%i:%S') AS CRETIM,		cel.CREUSR,		DATE_FORMAT(cel.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cel.MODTIM,'%H:%i:%S') AS MODTIM
+,		cel.MODUSR,		cel.ACTIVE	
+	</sql>
+	<select id="selectCELList" resultType="cel">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_EASY_LOGIN cel  left join CUSTOMER_INFO cui on cui.CUI_NUM=cel.CUI_NUM		
+		<where>
+			<if test='celNum != null and celNum != ""'>
+ 				AND cel.CEL_NUM like concat('%',#{celNum},'%')
+			</if>
+			<if test='celType != null and celType != ""'>
+ 				AND cel.CEL_TYPE like concat('%',#{celType},'%')
+			</if>
+			<if test='celId != null and celId != ""'>
+ 				AND cel.CEL_ID like concat('%',#{celId},'%')
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND cel.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='celEmail != null and celEmail != ""'>
+ 				AND cel.CEL_EMAIL like concat('%',#{celEmail},'%')
+			</if>
+			<if test='celName != null and celName != ""'>
+ 				AND cel.CEL_NAME like concat('%',#{celName},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cel.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cel.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cel.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cel.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cel.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cel.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cel.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCEL" resultType="cel">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_EASY_LOGIN cel  left join CUSTOMER_INFO cui on cui.CUI_NUM=cel.CUI_NUM
+		WHERE CEL_NUM = #{celNum}
+	</select>
+	<insert id="insertCEL" useGeneratedKeys="true" keyProperty="celNum" keyColumn="CEL_NUM">
+		INSERT INTO CUSTOMER_EASY_LOGIN	
+		(
+ 			<if test="celType != null and celType != '' ">  CEL_TYPE,</if>
+			<if test="celId != null and celId != '' ">  CEL_ID,</if>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM,</if>
+			<if test="celEmail != null and celEmail != '' ">  CEL_EMAIL,</if>
+			<if test="celName != null and celName != '' ">  CEL_NAME,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="celType != null and celType != '' ">  #{celType},</if>
+			<if test="celId != null and celId != '' ">  #{celId},</if>
+			<if test="cuiNum != null and cuiNum != '' ">  #{cuiNum},</if>
+			<if test="celEmail != null and celEmail != '' ">  #{celEmail},</if>
+			<if test="celName != null and celName != '' ">  #{celName},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateCEL">
+		UPDATE CUSTOMER_EASY_LOGIN cel 
+		<set>
+			<if test="celType != null and celType != '' ">  CEL_TYPE = #{celType},</if>
+			<if test="celId != null and celId != '' ">  CEL_ID = #{celId},</if>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="celEmail != null and celEmail != '' ">  CEL_EMAIL = #{celEmail},</if>
+			<if test="celName != null and celName != '' ">  CEL_NAME = #{celName},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cel.CEL_NUM  = #{celNum}
+	</update>
+	
+	<delete id="deleteCEL">
+		UPDATE CUSTOMER_EASY_LOGIN	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CEL_NUM  = #{celNum}
+	</delete>
+</mapper>

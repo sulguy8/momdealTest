@@ -1,0 +1,88 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerPointMapper">
+	<sql id="selectColumns">
+		cup.CUP_NUM,		cup.CUP_PNT,		DATE_FORMAT(cup.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cup.CRETIM,'%H:%i:%S') AS CRETIM,		cup.CREUSR,		DATE_FORMAT(cup.MODDAT,'%Y-%m-%d') AS MODDAT
+,		TIME_FORMAT(cup.MODTIM,'%H:%i:%S') AS MODTIM,		cup.MODUSR,		cup.ACTIVE	
+	</sql>
+	<select id="selectCUPList" resultType="cup">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_POINT cup 		
+		<where>
+			<if test='cupNum != null and cupNum != ""'>
+ 				AND cup.CUP_NUM like concat('%',#{cupNum},'%')
+			</if>
+			<if test='cupPnt != null and cupPnt != ""'>
+ 				AND cup.CUP_PNT = #{cupPnt}
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cup.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cup.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cup.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cup.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cup.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cup.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cup.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCUP" resultType="cup">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_POINT cup 
+		WHERE CUP_NUM = #{cupNum}
+	</select>
+	<insert id="insertCUP" useGeneratedKeys="true" keyProperty="cupNum" keyColumn="CUP_NUM">
+		INSERT INTO CUSTOMER_POINT	
+		(
+ 			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CUP_PNT,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cupPnt},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCUP">
+		UPDATE CUSTOMER_POINT cup 
+		<set>
+			<if test="cupPnt != null and cupPnt != '' ">  CUP_PNT = #{cupPnt},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cup.CUP_NUM  = #{cupNum}
+	</update>
+	
+	<delete id="deleteCUP">
+		UPDATE CUSTOMER_POINT	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CUP_NUM  = #{cupNum}
+	</delete>
+</mapper>

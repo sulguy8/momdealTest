@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="root" value="${pageContext.request.contextPath}" />
+<c:set var="rPath" value="${root}/resources" />
+<c:set var="jsPath" value="${root}/resources/js" />
+<c:set var="sPath" value="${rPath}/sbst" />
+<c:set var="fPath" value="${rPath}/file" />
+<c:set var="imgPath" value="https://img.shop-ing.co.kr:4443/files/" />
+<c:set var="ver" value="?version=1.0.0"/>
+<c:set var="curPage" value="${param.page}"/>
+<c:set var="isMini" value="${param.mini}"/>
+<c:set var="pk" value="${param.pk}"/>
+<c:set var="value" value="${param.value}"/>
+
+<c:set var="subPk" value="${param.subPk}"/>
+<c:set var="subValue" value="${param.subValue}"/>
+
+<c:if test="${!empty param.subTitle}">
+	<c:set var="subTitle" value="[${param.subTitle}]"/>
+</c:if>
+<c:if test="${empty isMini}">
+	<c:set var="isMini" value="false"/>
+</c:if>
+<c:if test="${empty curPage}">
+	<c:set var="curPage" value="/system/bri"/>
+</c:if>
+<c:set var="pages" value="${fn:split(curPage,'/')}"/>

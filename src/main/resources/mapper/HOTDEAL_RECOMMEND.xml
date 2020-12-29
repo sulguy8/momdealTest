@@ -1,0 +1,96 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.HotdealRecommendMapper">
+	<sql id="selectColumns">
+		hor.HOI_NUM,		hor.CUI_NUM,		hor.HOI_NUM,		hor.HOI_RECOMMEND_TYPE,		DATE_FORMAT(hor.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(hor.CRETIM,'%H:%i:%S') AS CRETIM
+,		hor.CREUSR,		DATE_FORMAT(hor.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(hor.MODTIM,'%H:%i:%S') AS MODTIM,		hor.MODUSR,		hor.ACTIVE
+	
+	</sql>
+	<select id="selectHOIList" resultType="hor">
+		SELECT <include refid="selectColumns"></include> FROM
+		HOTDEAL_RECOMMEND hor  left join CUSTOMER_INFO cui on cui.CUI_NUM=hor.CUI_NUM left join HOTDEAL_INFO hor on hor.HOI_NUM=hor.HOI_NUM		
+		<where>
+			<if test='horNum != null and horNum != ""'>
+ 				AND hor.HOI_NUM like concat('%',#{horNum},'%')
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND hor.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='horNum != null and horNum != ""'>
+ 				AND hor.HOI_NUM like concat('%',#{horNum},'%')
+			</if>
+			<if test='horRecommendType != null and horRecommendType != ""'>
+ 				AND hor.HOI_RECOMMEND_TYPE = #{horRecommendType}
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND hor.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND hor.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND hor.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND hor.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND hor.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND hor.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND hor.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectHOI" resultType="hor">
+		SELECT <include refid="selectColumns"></include> FROM HOTDEAL_RECOMMEND hor  left join CUSTOMER_INFO cui on cui.CUI_NUM=hor.CUI_NUM left join HOTDEAL_INFO hor on hor.HOI_NUM=hor.HOI_NUM
+		WHERE HOI_NUM = #{horNum}
+	</select>
+	<insert id="insertHOI" useGeneratedKeys="true" keyProperty="horNum" keyColumn="HOI_NUM">
+		INSERT INTO HOTDEAL_RECOMMEND	
+		(
+ 			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CUI_NUM,
+	HOI_RECOMMEND_TYPE,
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="active != null and active != '' ">  #{active},</if>
+		#{cuiNum},
+		#{horRecommendType},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateHOI">
+		UPDATE HOTDEAL_RECOMMEND hor 
+		<set>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="horRecommendType != null and horRecommendType != '' ">  HOI_RECOMMEND_TYPE = #{horRecommendType},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  hor.HOI_NUM  = #{horNum}
+	</update>
+	
+	<delete id="deleteHOI">
+		UPDATE HOTDEAL_RECOMMEND	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  HOI_NUM  = #{horNum}
+	</delete>
+</mapper>

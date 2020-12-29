@@ -1,0 +1,123 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CrawlingCateInfoMapper">
+	<sql id="selectColumns">
+		cci.CCI_NUM,		cci.CSP_NUM,		cci.CCI_PARENT_NUM,		cci.CCI_URL,		cci.CCI_KEY,		cci.CCI_DEP1
+,		cci.CCI_DEP2,		cci.CCI_DEP3,		DATE_FORMAT(cci.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cci.CRETIM,'%H:%i:%S') AS CRETIM,		cci.CREUSR
+,		DATE_FORMAT(cci.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cci.MODTIM,'%H:%i:%S') AS MODTIM,		cci.MODUSR,		cci.ACTIVE	
+	</sql>
+	<select id="selectCCIList" resultType="cci">
+		SELECT <include refid="selectColumns"></include> FROM
+		CRAWLING_CATE_INFO cci 		
+		<where>
+			<if test='cciNum != null and cciNum != ""'>
+ 				AND cci.CCI_NUM like concat('%',#{cciNum},'%')
+			</if>
+			<if test='cspNum != null and cspNum != ""'>
+ 				AND cci.CSP_NUM = #{cspNum}
+			</if>
+			<if test='cciParentNum != null and cciParentNum != ""'>
+ 				AND cci.CCI_PARENT_NUM = #{cciParentNum}
+			</if>
+			<if test='cciUrl != null and cciUrl != ""'>
+ 				AND cci.CCI_URL like concat('%',#{cciUrl},'%')
+			</if>
+			<if test='cciKey != null and cciKey != ""'>
+ 				AND cci.CCI_KEY like concat('%',#{cciKey},'%')
+			</if>
+			<if test='cciDep1 != null and cciDep1 != ""'>
+ 				AND cci.CCI_DEP1 like concat('%',#{cciDep1},'%')
+			</if>
+			<if test='cciDep2 != null and cciDep2 != ""'>
+ 				AND cci.CCI_DEP2 like concat('%',#{cciDep2},'%')
+			</if>
+			<if test='cciDep3 != null and cciDep3 != ""'>
+ 				AND cci.CCI_DEP3 like concat('%',#{cciDep3},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cci.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cci.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cci.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cci.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cci.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cci.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cci.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCCI" resultType="cci">
+		SELECT <include refid="selectColumns"></include> FROM CRAWLING_CATE_INFO cci 
+		WHERE CCI_NUM = #{cciNum}
+	</select>
+	<insert id="insertCCI" useGeneratedKeys="true" keyProperty="cciNum" keyColumn="CCI_NUM">
+		INSERT INTO CRAWLING_CATE_INFO	
+		(
+ 			<if test="cciParentNum != null and cciParentNum != '' ">  CCI_PARENT_NUM,</if>
+			<if test="cciUrl != null and cciUrl != '' ">  CCI_URL,</if>
+			<if test="cciDep1 != null and cciDep1 != '' ">  CCI_DEP1,</if>
+			<if test="cciDep2 != null and cciDep2 != '' ">  CCI_DEP2,</if>
+			<if test="cciDep3 != null and cciDep3 != '' ">  CCI_DEP3,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CSP_NUM,
+	CCI_KEY,
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="cciParentNum != null and cciParentNum != '' ">  #{cciParentNum},</if>
+			<if test="cciUrl != null and cciUrl != '' ">  #{cciUrl},</if>
+			<if test="cciDep1 != null and cciDep1 != '' ">  #{cciDep1},</if>
+			<if test="cciDep2 != null and cciDep2 != '' ">  #{cciDep2},</if>
+			<if test="cciDep3 != null and cciDep3 != '' ">  #{cciDep3},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cspNum},
+		#{cciKey},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateCCI">
+		UPDATE CRAWLING_CATE_INFO cci 
+		<set>
+			<if test="cspNum != null and cspNum != '' ">  CSP_NUM = #{cspNum},</if>
+			<if test="cciParentNum != null and cciParentNum != '' ">  CCI_PARENT_NUM = #{cciParentNum},</if>
+			<if test="cciUrl != null and cciUrl != '' ">  CCI_URL = #{cciUrl},</if>
+			<if test="cciKey != null and cciKey != '' ">  CCI_KEY = #{cciKey},</if>
+			<if test="cciDep1 != null and cciDep1 != '' ">  CCI_DEP1 = #{cciDep1},</if>
+			<if test="cciDep2 != null and cciDep2 != '' ">  CCI_DEP2 = #{cciDep2},</if>
+			<if test="cciDep3 != null and cciDep3 != '' ">  CCI_DEP3 = #{cciDep3},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cci.CCI_NUM  = #{cciNum}
+	</update>
+	
+	<delete id="deleteCCI">
+		UPDATE CRAWLING_CATE_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CCI_NUM  = #{cciNum}
+	</delete>
+</mapper>

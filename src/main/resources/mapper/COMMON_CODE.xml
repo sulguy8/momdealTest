@@ -1,0 +1,107 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CommonCodeMapper">
+	<sql id="selectColumns">
+		cod.COD_NUM,		cod.COD_TYPE,		cod.COD_KEY,		cod.COD_VAL,		cod.COD_DESC,		DATE_FORMAT(cod.CREDAT,'%Y-%m-%d') AS CREDAT
+,		TIME_FORMAT(cod.CRETIM,'%H:%i:%S') AS CRETIM,		cod.CREUSR,		DATE_FORMAT(cod.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cod.MODTIM,'%H:%i:%S') AS MODTIM,		cod.MODUSR
+,		cod.ACTIVE	
+	</sql>
+	<select id="selectCODList" resultType="cod">
+		SELECT <include refid="selectColumns"></include> FROM
+		COMMON_CODE cod 		
+		<where>
+			<if test='codNum != null and codNum != ""'>
+ 				AND cod.COD_NUM like concat('%',#{codNum},'%')
+			</if>
+			<if test='codType != null and codType != ""'>
+ 				AND cod.COD_TYPE like concat('%',#{codType},'%')
+			</if>
+			<if test='codKey != null and codKey != ""'>
+ 				AND cod.COD_KEY like concat('%',#{codKey},'%')
+			</if>
+			<if test='codVal != null and codVal != ""'>
+ 				AND cod.COD_VAL like concat('%',#{codVal},'%')
+			</if>
+			<if test='codDesc != null and codDesc != ""'>
+ 				AND cod.COD_DESC like concat('%',#{codDesc},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cod.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cod.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cod.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cod.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cod.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cod.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cod.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCOD" resultType="cod">
+		SELECT <include refid="selectColumns"></include> FROM COMMON_CODE cod 
+		WHERE COD_NUM = #{codNum}
+	</select>
+	<insert id="insertCOD" useGeneratedKeys="true" keyProperty="codNum" keyColumn="COD_NUM">
+		INSERT INTO COMMON_CODE	
+		(
+ 			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	COD_TYPE,
+	COD_KEY,
+	COD_VAL,
+	COD_DESC,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{codType},
+		#{codKey},
+		#{codVal},
+		#{codDesc},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCOD">
+		UPDATE COMMON_CODE cod 
+		<set>
+			<if test="codType != null and codType != '' ">  COD_TYPE = #{codType},</if>
+			<if test="codKey != null and codKey != '' ">  COD_KEY = #{codKey},</if>
+			<if test="codVal != null and codVal != '' ">  COD_VAL = #{codVal},</if>
+			<if test="codDesc != null and codDesc != '' ">  COD_DESC = #{codDesc},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cod.COD_NUM  = #{codNum}
+	</update>
+	
+	<delete id="deleteCOD">
+		UPDATE COMMON_CODE	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  COD_NUM  = #{codNum}
+	</delete>
+</mapper>

@@ -1,0 +1,113 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerPointHisMapper">
+	<sql id="selectColumns">
+		cph.CPH_NUM,		cph.CPH_PNT,		cph.CPH_TYPE,		cph.CPH_DESC,		cph.CUI_NUM,		cph.HOI_NUM
+,		DATE_FORMAT(cph.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cph.CRETIM,'%H:%i:%S') AS CRETIM,		cph.CREUSR,		DATE_FORMAT(cph.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cph.MODTIM,'%H:%i:%S') AS MODTIM
+,		cph.MODUSR,		cph.ACTIVE	
+	</sql>
+	<select id="selectCPHList" resultType="cph">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_POINT_HIS cph 		
+		<where>
+			<if test='cphNum != null and cphNum != ""'>
+ 				AND cph.CPH_NUM like concat('%',#{cphNum},'%')
+			</if>
+			<if test='cphPnt != null and cphPnt != ""'>
+ 				AND cph.CPH_PNT = #{cphPnt}
+			</if>
+			<if test='cphType != null and cphType != ""'>
+ 				AND cph.CPH_TYPE = #{cphType}
+			</if>
+			<if test='cphDesc != null and cphDesc != ""'>
+ 				AND cph.CPH_DESC like concat('%',#{cphDesc},'%')
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND cph.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='hoiNum != null and hoiNum != ""'>
+ 				AND cph.HOI_NUM = #{hoiNum}
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cph.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cph.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cph.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cph.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cph.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cph.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cph.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCPH" resultType="cph">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_POINT_HIS cph 
+		WHERE CPH_NUM = #{cphNum}
+	</select>
+	<insert id="insertCPH" useGeneratedKeys="true" keyProperty="cphNum" keyColumn="CPH_NUM">
+		INSERT INTO CUSTOMER_POINT_HIS	
+		(
+ 			<if test="cphPnt != null and cphPnt != '' ">  CPH_PNT,</if>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM,</if>
+			<if test="hoiNum != null and hoiNum != '' ">  HOI_NUM,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CPH_TYPE,
+	CPH_DESC,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="cphPnt != null and cphPnt != '' ">  #{cphPnt},</if>
+			<if test="cuiNum != null and cuiNum != '' ">  #{cuiNum},</if>
+			<if test="hoiNum != null and hoiNum != '' ">  #{hoiNum},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cphType},
+		#{cphDesc},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCPH">
+		UPDATE CUSTOMER_POINT_HIS cph 
+		<set>
+			<if test="cphPnt != null and cphPnt != '' ">  CPH_PNT = #{cphPnt},</if>
+			<if test="cphType != null and cphType != '' ">  CPH_TYPE = #{cphType},</if>
+			<if test="cphDesc != null and cphDesc != '' ">  CPH_DESC = #{cphDesc},</if>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="hoiNum != null and hoiNum != '' ">  HOI_NUM = #{hoiNum},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cph.CPH_NUM  = #{cphNum}
+	</update>
+	
+	<delete id="deleteCPH">
+		UPDATE CUSTOMER_POINT_HIS	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CPH_NUM  = #{cphNum}
+	</delete>
+</mapper>

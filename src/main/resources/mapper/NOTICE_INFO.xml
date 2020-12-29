@@ -1,0 +1,169 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.NoticeInfoMapper">
+	<sql id="selectColumns">
+		noi.NOI_NUM,		noi.NOI_TITLE,		noi.NOI_CONTENT,		noi.NOI_VIEW_CNT,		noi.NOI_SHARE_CNT,		noi.NOI_IMG1_NAME
+,		noi.NOI_IMG2_NAME,		noi.NOI_IMG3_NAME,		noi.NOI_IMG4_NAME,		noi.NOI_IMG5_NAME,		noi.NOI_IMG6_NAME
+,		noi.NOI_IMG7_NAME,		noi.NOI_IMG8_NAME,		noi.NOI_IMG9_NAME,		noi.NOI_IMG10_NAME,		DATE_FORMAT(noi.CREDAT,'%Y-%m-%d') AS CREDAT
+,		TIME_FORMAT(noi.CRETIM,'%H:%i:%S') AS CRETIM,		noi.CREUSR,		DATE_FORMAT(noi.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(noi.MODTIM,'%H:%i:%S') AS MODTIM,		noi.MODUSR
+,		noi.ACTIVE	
+	</sql>
+	<select id="selectNOIList" resultType="noi">
+		SELECT <include refid="selectColumns"></include> FROM
+		NOTICE_INFO noi 		
+		<where>
+			<if test='noiNum != null and noiNum != ""'>
+ 				AND noi.NOI_NUM like concat('%',#{noiNum},'%')
+			</if>
+			<if test='noiTitle != null and noiTitle != ""'>
+ 				AND noi.NOI_TITLE like concat('%',#{noiTitle},'%')
+			</if>
+			<if test='noiContent != null and noiContent != ""'>
+ 				AND noi.NOI_CONTENT like concat('%',#{noiContent},'%')
+			</if>
+			<if test='noiViewCnt != null and noiViewCnt != ""'>
+ 				AND noi.NOI_VIEW_CNT = #{noiViewCnt}
+			</if>
+			<if test='noiShareCnt != null and noiShareCnt != ""'>
+ 				AND noi.NOI_SHARE_CNT = #{noiShareCnt}
+			</if>
+			<if test='noiImg1Name != null and noiImg1Name != ""'>
+ 				AND noi.NOI_IMG1_NAME like concat('%',#{noiImg1Name},'%')
+			</if>
+			<if test='noiImg2Name != null and noiImg2Name != ""'>
+ 				AND noi.NOI_IMG2_NAME like concat('%',#{noiImg2Name},'%')
+			</if>
+			<if test='noiImg3Name != null and noiImg3Name != ""'>
+ 				AND noi.NOI_IMG3_NAME like concat('%',#{noiImg3Name},'%')
+			</if>
+			<if test='noiImg4Name != null and noiImg4Name != ""'>
+ 				AND noi.NOI_IMG4_NAME like concat('%',#{noiImg4Name},'%')
+			</if>
+			<if test='noiImg5Name != null and noiImg5Name != ""'>
+ 				AND noi.NOI_IMG5_NAME like concat('%',#{noiImg5Name},'%')
+			</if>
+			<if test='noiImg6Name != null and noiImg6Name != ""'>
+ 				AND noi.NOI_IMG6_NAME like concat('%',#{noiImg6Name},'%')
+			</if>
+			<if test='noiImg7Name != null and noiImg7Name != ""'>
+ 				AND noi.NOI_IMG7_NAME like concat('%',#{noiImg7Name},'%')
+			</if>
+			<if test='noiImg8Name != null and noiImg8Name != ""'>
+ 				AND noi.NOI_IMG8_NAME like concat('%',#{noiImg8Name},'%')
+			</if>
+			<if test='noiImg9Name != null and noiImg9Name != ""'>
+ 				AND noi.NOI_IMG9_NAME like concat('%',#{noiImg9Name},'%')
+			</if>
+			<if test='noiImg10Name != null and noiImg10Name != ""'>
+ 				AND noi.NOI_IMG10_NAME like concat('%',#{noiImg10Name},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND noi.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND noi.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND noi.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND noi.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND noi.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND noi.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND noi.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectNOI" resultType="noi">
+		SELECT <include refid="selectColumns"></include> FROM NOTICE_INFO noi 
+		WHERE NOI_NUM = #{noiNum}
+	</select>
+	<insert id="insertNOI" useGeneratedKeys="true" keyProperty="noiNum" keyColumn="NOI_NUM">
+		INSERT INTO NOTICE_INFO	
+		(
+ 			<if test="noiImg1Name != null and noiImg1Name != '' ">  NOI_IMG1_NAME,</if>
+			<if test="noiImg2Name != null and noiImg2Name != '' ">  NOI_IMG2_NAME,</if>
+			<if test="noiImg3Name != null and noiImg3Name != '' ">  NOI_IMG3_NAME,</if>
+			<if test="noiImg4Name != null and noiImg4Name != '' ">  NOI_IMG4_NAME,</if>
+			<if test="noiImg5Name != null and noiImg5Name != '' ">  NOI_IMG5_NAME,</if>
+			<if test="noiImg6Name != null and noiImg6Name != '' ">  NOI_IMG6_NAME,</if>
+			<if test="noiImg7Name != null and noiImg7Name != '' ">  NOI_IMG7_NAME,</if>
+			<if test="noiImg8Name != null and noiImg8Name != '' ">  NOI_IMG8_NAME,</if>
+			<if test="noiImg9Name != null and noiImg9Name != '' ">  NOI_IMG9_NAME,</if>
+			<if test="noiImg10Name != null and noiImg10Name != '' ">  NOI_IMG10_NAME,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	NOI_TITLE,
+	NOI_CONTENT,
+	NOI_VIEW_CNT,
+	NOI_SHARE_CNT,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="noiImg1Name != null and noiImg1Name != '' ">  #{noiImg1Name},</if>
+			<if test="noiImg2Name != null and noiImg2Name != '' ">  #{noiImg2Name},</if>
+			<if test="noiImg3Name != null and noiImg3Name != '' ">  #{noiImg3Name},</if>
+			<if test="noiImg4Name != null and noiImg4Name != '' ">  #{noiImg4Name},</if>
+			<if test="noiImg5Name != null and noiImg5Name != '' ">  #{noiImg5Name},</if>
+			<if test="noiImg6Name != null and noiImg6Name != '' ">  #{noiImg6Name},</if>
+			<if test="noiImg7Name != null and noiImg7Name != '' ">  #{noiImg7Name},</if>
+			<if test="noiImg8Name != null and noiImg8Name != '' ">  #{noiImg8Name},</if>
+			<if test="noiImg9Name != null and noiImg9Name != '' ">  #{noiImg9Name},</if>
+			<if test="noiImg10Name != null and noiImg10Name != '' ">  #{noiImg10Name},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{noiTitle},
+		#{noiContent},
+		#{noiViewCnt},
+		#{noiShareCnt},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateNOI">
+		UPDATE NOTICE_INFO noi 
+		<set>
+			<if test="noiTitle != null and noiTitle != '' ">  NOI_TITLE = #{noiTitle},</if>
+			<if test="noiContent != null and noiContent != '' ">  NOI_CONTENT = #{noiContent},</if>
+			<if test="noiViewCnt != null and noiViewCnt != '' ">  NOI_VIEW_CNT = #{noiViewCnt},</if>
+			<if test="noiShareCnt != null and noiShareCnt != '' ">  NOI_SHARE_CNT = #{noiShareCnt},</if>
+			<if test="noiImg1Name != null and noiImg1Name != '' ">  NOI_IMG1_NAME = #{noiImg1Name},</if>
+			<if test="noiImg2Name != null and noiImg2Name != '' ">  NOI_IMG2_NAME = #{noiImg2Name},</if>
+			<if test="noiImg3Name != null and noiImg3Name != '' ">  NOI_IMG3_NAME = #{noiImg3Name},</if>
+			<if test="noiImg4Name != null and noiImg4Name != '' ">  NOI_IMG4_NAME = #{noiImg4Name},</if>
+			<if test="noiImg5Name != null and noiImg5Name != '' ">  NOI_IMG5_NAME = #{noiImg5Name},</if>
+			<if test="noiImg6Name != null and noiImg6Name != '' ">  NOI_IMG6_NAME = #{noiImg6Name},</if>
+			<if test="noiImg7Name != null and noiImg7Name != '' ">  NOI_IMG7_NAME = #{noiImg7Name},</if>
+			<if test="noiImg8Name != null and noiImg8Name != '' ">  NOI_IMG8_NAME = #{noiImg8Name},</if>
+			<if test="noiImg9Name != null and noiImg9Name != '' ">  NOI_IMG9_NAME = #{noiImg9Name},</if>
+			<if test="noiImg10Name != null and noiImg10Name != '' ">  NOI_IMG10_NAME = #{noiImg10Name},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  noi.NOI_NUM  = #{noiNum}
+	</update>
+	
+	<delete id="deleteNOI">
+		UPDATE NOTICE_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  NOI_NUM  = #{noiNum}
+	</delete>
+</mapper>

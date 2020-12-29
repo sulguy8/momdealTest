@@ -1,0 +1,218 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.EventInfoMapper">
+	<sql id="selectColumns">
+		evi.EVI_NUM,		evi.EVI_STATUS,		evi.EVI_TITLE,		evi.EVI_CONTENT,		evi.EVI_SELECTION_LOGIC,		evi.EVI_MISSION
+,		evi.EVI_TYPE,		evi.EVI_IMG1_NAME,		evi.EVI_IMG2_NAME,		evi.EVI_IMG3_NAME,		evi.EVI_IMG4_NAME
+,		evi.EVI_IMG5_NAME,		evi.EVI_IMG6_NAME,		evi.EVI_IMG7_NAME,		evi.EVI_IMG8_NAME,		evi.EVI_IMG9_NAME
+,		evi.EVI_IMG10_NAME,		evi.EVI_RECRUIT_MAXNUM,		evi.EVI_RECRUIT_SDAT,		evi.EVI_RECRUIT_EDAT,		evi.EVI_WRITE_SDAT
+,		evi.EVI_WRITE_EDAT,		evi.EVI_ANNOUNCE_DAT,		DATE_FORMAT(evi.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(evi.CRETIM,'%H:%i:%S') AS CRETIM,		evi.CREUSR
+,		DATE_FORMAT(evi.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(evi.MODTIM,'%H:%i:%S') AS MODTIM,		evi.MODUSR,		evi.ACTIVE	
+	</sql>
+	<select id="selectEVIList" resultType="evi">
+		SELECT <include refid="selectColumns"></include> FROM
+		EVENT_INFO evi 		
+		<where>
+			<if test='eviNum != null and eviNum != ""'>
+ 				AND evi.EVI_NUM like concat('%',#{eviNum},'%')
+			</if>
+			<if test='eviStatus != null and eviStatus != ""'>
+ 				AND evi.EVI_STATUS like concat('%',#{eviStatus},'%')
+			</if>
+			<if test='eviTitle != null and eviTitle != ""'>
+ 				AND evi.EVI_TITLE like concat('%',#{eviTitle},'%')
+			</if>
+			<if test='eviContent != null and eviContent != ""'>
+ 				AND evi.EVI_CONTENT like concat('%',#{eviContent},'%')
+			</if>
+			<if test='eviSelectionLogic != null and eviSelectionLogic != ""'>
+ 				AND evi.EVI_SELECTION_LOGIC like concat('%',#{eviSelectionLogic},'%')
+			</if>
+			<if test='eviMission != null and eviMission != ""'>
+ 				AND evi.EVI_MISSION like concat('%',#{eviMission},'%')
+			</if>
+			<if test='eviType != null and eviType != ""'>
+ 				AND evi.EVI_TYPE = #{eviType}
+			</if>
+			<if test='eviImg1Name != null and eviImg1Name != ""'>
+ 				AND evi.EVI_IMG1_NAME like concat('%',#{eviImg1Name},'%')
+			</if>
+			<if test='eviImg2Name != null and eviImg2Name != ""'>
+ 				AND evi.EVI_IMG2_NAME like concat('%',#{eviImg2Name},'%')
+			</if>
+			<if test='eviImg3Name != null and eviImg3Name != ""'>
+ 				AND evi.EVI_IMG3_NAME like concat('%',#{eviImg3Name},'%')
+			</if>
+			<if test='eviImg4Name != null and eviImg4Name != ""'>
+ 				AND evi.EVI_IMG4_NAME like concat('%',#{eviImg4Name},'%')
+			</if>
+			<if test='eviImg5Name != null and eviImg5Name != ""'>
+ 				AND evi.EVI_IMG5_NAME like concat('%',#{eviImg5Name},'%')
+			</if>
+			<if test='eviImg6Name != null and eviImg6Name != ""'>
+ 				AND evi.EVI_IMG6_NAME like concat('%',#{eviImg6Name},'%')
+			</if>
+			<if test='eviImg7Name != null and eviImg7Name != ""'>
+ 				AND evi.EVI_IMG7_NAME like concat('%',#{eviImg7Name},'%')
+			</if>
+			<if test='eviImg8Name != null and eviImg8Name != ""'>
+ 				AND evi.EVI_IMG8_NAME like concat('%',#{eviImg8Name},'%')
+			</if>
+			<if test='eviImg9Name != null and eviImg9Name != ""'>
+ 				AND evi.EVI_IMG9_NAME like concat('%',#{eviImg9Name},'%')
+			</if>
+			<if test='eviImg10Name != null and eviImg10Name != ""'>
+ 				AND evi.EVI_IMG10_NAME like concat('%',#{eviImg10Name},'%')
+			</if>
+			<if test='eviRecruitMaxnum != null and eviRecruitMaxnum != ""'>
+ 				AND evi.EVI_RECRUIT_MAXNUM = #{eviRecruitMaxnum}
+			</if>
+			<if test='eviRecruitSdat != null and eviRecruitSdat != ""'>
+ 				AND evi.EVI_RECRUIT_SDAT like concat('%',#{eviRecruitSdat},'%')
+			</if>
+			<if test='eviRecruitEdat != null and eviRecruitEdat != ""'>
+ 				AND evi.EVI_RECRUIT_EDAT like concat('%',#{eviRecruitEdat},'%')
+			</if>
+			<if test='eviWriteSdat != null and eviWriteSdat != ""'>
+ 				AND evi.EVI_WRITE_SDAT like concat('%',#{eviWriteSdat},'%')
+			</if>
+			<if test='eviWriteEdat != null and eviWriteEdat != ""'>
+ 				AND evi.EVI_WRITE_EDAT like concat('%',#{eviWriteEdat},'%')
+			</if>
+			<if test='eviAnnounceDat != null and eviAnnounceDat != ""'>
+ 				AND evi.EVI_ANNOUNCE_DAT like concat('%',#{eviAnnounceDat},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND evi.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND evi.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND evi.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND evi.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND evi.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND evi.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND evi.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectEVI" resultType="evi">
+		SELECT <include refid="selectColumns"></include> FROM EVENT_INFO evi 
+		WHERE EVI_NUM = #{eviNum}
+	</select>
+	<insert id="insertEVI" useGeneratedKeys="true" keyProperty="eviNum" keyColumn="EVI_NUM">
+		INSERT INTO EVENT_INFO	
+		(
+ 			<if test="eviStatus != null and eviStatus != '' ">  EVI_STATUS,</if>
+			<if test="eviTitle != null and eviTitle != '' ">  EVI_TITLE,</if>
+			<if test="eviContent != null and eviContent != '' ">  EVI_CONTENT,</if>
+			<if test="eviSelectionLogic != null and eviSelectionLogic != '' ">  EVI_SELECTION_LOGIC,</if>
+			<if test="eviMission != null and eviMission != '' ">  EVI_MISSION,</if>
+			<if test="eviType != null and eviType != '' ">  EVI_TYPE,</if>
+			<if test="eviImg1Name != null and eviImg1Name != '' ">  EVI_IMG1_NAME,</if>
+			<if test="eviImg2Name != null and eviImg2Name != '' ">  EVI_IMG2_NAME,</if>
+			<if test="eviImg3Name != null and eviImg3Name != '' ">  EVI_IMG3_NAME,</if>
+			<if test="eviImg4Name != null and eviImg4Name != '' ">  EVI_IMG4_NAME,</if>
+			<if test="eviImg5Name != null and eviImg5Name != '' ">  EVI_IMG5_NAME,</if>
+			<if test="eviImg6Name != null and eviImg6Name != '' ">  EVI_IMG6_NAME,</if>
+			<if test="eviImg7Name != null and eviImg7Name != '' ">  EVI_IMG7_NAME,</if>
+			<if test="eviImg8Name != null and eviImg8Name != '' ">  EVI_IMG8_NAME,</if>
+			<if test="eviImg9Name != null and eviImg9Name != '' ">  EVI_IMG9_NAME,</if>
+			<if test="eviImg10Name != null and eviImg10Name != '' ">  EVI_IMG10_NAME,</if>
+			<if test="eviRecruitMaxnum != null and eviRecruitMaxnum != '' ">  EVI_RECRUIT_MAXNUM,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	EVI_RECRUIT_SDAT,
+	EVI_RECRUIT_EDAT,
+	EVI_WRITE_SDAT,
+	EVI_WRITE_EDAT,
+	EVI_ANNOUNCE_DAT,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="eviStatus != null and eviStatus != '' ">  #{eviStatus},</if>
+			<if test="eviTitle != null and eviTitle != '' ">  #{eviTitle},</if>
+			<if test="eviContent != null and eviContent != '' ">  #{eviContent},</if>
+			<if test="eviSelectionLogic != null and eviSelectionLogic != '' ">  #{eviSelectionLogic},</if>
+			<if test="eviMission != null and eviMission != '' ">  #{eviMission},</if>
+			<if test="eviType != null and eviType != '' ">  #{eviType},</if>
+			<if test="eviImg1Name != null and eviImg1Name != '' ">  #{eviImg1Name},</if>
+			<if test="eviImg2Name != null and eviImg2Name != '' ">  #{eviImg2Name},</if>
+			<if test="eviImg3Name != null and eviImg3Name != '' ">  #{eviImg3Name},</if>
+			<if test="eviImg4Name != null and eviImg4Name != '' ">  #{eviImg4Name},</if>
+			<if test="eviImg5Name != null and eviImg5Name != '' ">  #{eviImg5Name},</if>
+			<if test="eviImg6Name != null and eviImg6Name != '' ">  #{eviImg6Name},</if>
+			<if test="eviImg7Name != null and eviImg7Name != '' ">  #{eviImg7Name},</if>
+			<if test="eviImg8Name != null and eviImg8Name != '' ">  #{eviImg8Name},</if>
+			<if test="eviImg9Name != null and eviImg9Name != '' ">  #{eviImg9Name},</if>
+			<if test="eviImg10Name != null and eviImg10Name != '' ">  #{eviImg10Name},</if>
+			<if test="eviRecruitMaxnum != null and eviRecruitMaxnum != '' ">  #{eviRecruitMaxnum},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{eviRecruitSdat},
+		#{eviRecruitEdat},
+		#{eviWriteSdat},
+		#{eviWriteEdat},
+		#{eviAnnounceDat},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateEVI">
+		UPDATE EVENT_INFO evi 
+		<set>
+			<if test="eviStatus != null and eviStatus != '' ">  EVI_STATUS = #{eviStatus},</if>
+			<if test="eviTitle != null and eviTitle != '' ">  EVI_TITLE = #{eviTitle},</if>
+			<if test="eviContent != null and eviContent != '' ">  EVI_CONTENT = #{eviContent},</if>
+			<if test="eviSelectionLogic != null and eviSelectionLogic != '' ">  EVI_SELECTION_LOGIC = #{eviSelectionLogic},</if>
+			<if test="eviMission != null and eviMission != '' ">  EVI_MISSION = #{eviMission},</if>
+			<if test="eviType != null and eviType != '' ">  EVI_TYPE = #{eviType},</if>
+			<if test="eviImg1Name != null and eviImg1Name != '' ">  EVI_IMG1_NAME = #{eviImg1Name},</if>
+			<if test="eviImg2Name != null and eviImg2Name != '' ">  EVI_IMG2_NAME = #{eviImg2Name},</if>
+			<if test="eviImg3Name != null and eviImg3Name != '' ">  EVI_IMG3_NAME = #{eviImg3Name},</if>
+			<if test="eviImg4Name != null and eviImg4Name != '' ">  EVI_IMG4_NAME = #{eviImg4Name},</if>
+			<if test="eviImg5Name != null and eviImg5Name != '' ">  EVI_IMG5_NAME = #{eviImg5Name},</if>
+			<if test="eviImg6Name != null and eviImg6Name != '' ">  EVI_IMG6_NAME = #{eviImg6Name},</if>
+			<if test="eviImg7Name != null and eviImg7Name != '' ">  EVI_IMG7_NAME = #{eviImg7Name},</if>
+			<if test="eviImg8Name != null and eviImg8Name != '' ">  EVI_IMG8_NAME = #{eviImg8Name},</if>
+			<if test="eviImg9Name != null and eviImg9Name != '' ">  EVI_IMG9_NAME = #{eviImg9Name},</if>
+			<if test="eviImg10Name != null and eviImg10Name != '' ">  EVI_IMG10_NAME = #{eviImg10Name},</if>
+			<if test="eviRecruitMaxnum != null and eviRecruitMaxnum != '' ">  EVI_RECRUIT_MAXNUM = #{eviRecruitMaxnum},</if>
+			<if test="eviRecruitSdat != null and eviRecruitSdat != '' ">  EVI_RECRUIT_SDAT = #{eviRecruitSdat},</if>
+			<if test="eviRecruitEdat != null and eviRecruitEdat != '' ">  EVI_RECRUIT_EDAT = #{eviRecruitEdat},</if>
+			<if test="eviWriteSdat != null and eviWriteSdat != '' ">  EVI_WRITE_SDAT = #{eviWriteSdat},</if>
+			<if test="eviWriteEdat != null and eviWriteEdat != '' ">  EVI_WRITE_EDAT = #{eviWriteEdat},</if>
+			<if test="eviAnnounceDat != null and eviAnnounceDat != '' ">  EVI_ANNOUNCE_DAT = #{eviAnnounceDat},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  evi.EVI_NUM  = #{eviNum}
+	</update>
+	
+	<delete id="deleteEVI">
+		UPDATE EVENT_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  EVI_NUM  = #{eviNum}
+	</delete>
+</mapper>

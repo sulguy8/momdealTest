@@ -1,0 +1,241 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerInfoMapper">
+	<sql id="selectColumns">
+		cui.CUI_NUM,		cui.CUI_NAME,		cui.CUI_NICKNAME,		cui.CUI_PHONE,		cui.CUI_TRANS,		cui.CUI_BIRTH
+,		cui.CUI_PROFILEIMG_NAME,		cui.CUI_AGREE_LOCATION,		cui.CUI_AGREE_LOCATIONDAT,		cui.CUI_AGREE_PHONE,		cui.CUI_AGREE_PHONEDAT
+,		cui.CUI_AGREE_CAMERA,		cui.CUI_AGREE_CAMERADAT,		cui.CUI_AGREE_PUSH,		cui.CUI_AGREE_PUSHDAT,		cui.CUI_AGREE_SMS
+,		cui.CUI_AGREE_SMSDAT,		cui.CUI_AGREE_EMAIL,		cui.CUI_AGREE_EMAILDAT,		cui.CUI_AGREE_SERVICE,		cui.CUI_AGREE_SERVICEDAT
+,		cui.CUI_AGREE_PRIVATE,		cui.CUI_AGREE_PRIVATEDAT,		cui.CUI_CONFIG_REPLY,		cui.CUI_CONFIG_NOTI,		cui.CUI_CONFIG_EVENT
+,		cui.CUI_CONFIG_POINT,		DATE_FORMAT(cui.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cui.CRETIM,'%H:%i:%S') AS CRETIM,		cui.CREUSR,		DATE_FORMAT(cui.MODDAT,'%Y-%m-%d') AS MODDAT
+,		TIME_FORMAT(cui.MODTIM,'%H:%i:%S') AS MODTIM,		cui.MODUSR,		cui.ACTIVE	
+	</sql>
+	<select id="selectCUIList" resultType="cui">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_INFO cui 		
+		<where>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND cui.CUI_NUM like concat('%',#{cuiNum},'%')
+			</if>
+			<if test='cuiName != null and cuiName != ""'>
+ 				AND cui.CUI_NAME like concat('%',#{cuiName},'%')
+			</if>
+			<if test='cuiNickname != null and cuiNickname != ""'>
+ 				AND cui.CUI_NICKNAME like concat('%',#{cuiNickname},'%')
+			</if>
+			<if test='cuiPhone != null and cuiPhone != ""'>
+ 				AND cui.CUI_PHONE like concat('%',#{cuiPhone},'%')
+			</if>
+			<if test='cuiTrans != null and cuiTrans != ""'>
+ 				AND cui.CUI_TRANS like concat('%',#{cuiTrans},'%')
+			</if>
+			<if test='cuiBirth != null and cuiBirth != ""'>
+ 				AND cui.CUI_BIRTH like concat('%',#{cuiBirth},'%')
+			</if>
+			<if test='cuiProfileimgName != null and cuiProfileimgName != ""'>
+ 				AND cui.CUI_PROFILEIMG_NAME like concat('%',#{cuiProfileimgName},'%')
+			</if>
+			<if test='cuiAgreeLocation != null and cuiAgreeLocation != ""'>
+ 				AND cui.CUI_AGREE_LOCATION like concat('%',#{cuiAgreeLocation},'%')
+			</if>
+			<if test='cuiAgreeLocationdat != null and cuiAgreeLocationdat != ""'>
+ 				AND cui.CUI_AGREE_LOCATIONDAT like concat('%',#{cuiAgreeLocationdat},'%')
+			</if>
+			<if test='cuiAgreePhone != null and cuiAgreePhone != ""'>
+ 				AND cui.CUI_AGREE_PHONE like concat('%',#{cuiAgreePhone},'%')
+			</if>
+			<if test='cuiAgreePhonedat != null and cuiAgreePhonedat != ""'>
+ 				AND cui.CUI_AGREE_PHONEDAT like concat('%',#{cuiAgreePhonedat},'%')
+			</if>
+			<if test='cuiAgreeCamera != null and cuiAgreeCamera != ""'>
+ 				AND cui.CUI_AGREE_CAMERA like concat('%',#{cuiAgreeCamera},'%')
+			</if>
+			<if test='cuiAgreeCameradat != null and cuiAgreeCameradat != ""'>
+ 				AND cui.CUI_AGREE_CAMERADAT like concat('%',#{cuiAgreeCameradat},'%')
+			</if>
+			<if test='cuiAgreePush != null and cuiAgreePush != ""'>
+ 				AND cui.CUI_AGREE_PUSH like concat('%',#{cuiAgreePush},'%')
+			</if>
+			<if test='cuiAgreePushdat != null and cuiAgreePushdat != ""'>
+ 				AND cui.CUI_AGREE_PUSHDAT like concat('%',#{cuiAgreePushdat},'%')
+			</if>
+			<if test='cuiAgreeSms != null and cuiAgreeSms != ""'>
+ 				AND cui.CUI_AGREE_SMS like concat('%',#{cuiAgreeSms},'%')
+			</if>
+			<if test='cuiAgreeSmsdat != null and cuiAgreeSmsdat != ""'>
+ 				AND cui.CUI_AGREE_SMSDAT like concat('%',#{cuiAgreeSmsdat},'%')
+			</if>
+			<if test='cuiAgreeEmail != null and cuiAgreeEmail != ""'>
+ 				AND cui.CUI_AGREE_EMAIL like concat('%',#{cuiAgreeEmail},'%')
+			</if>
+			<if test='cuiAgreeEmaildat != null and cuiAgreeEmaildat != ""'>
+ 				AND cui.CUI_AGREE_EMAILDAT like concat('%',#{cuiAgreeEmaildat},'%')
+			</if>
+			<if test='cuiAgreeService != null and cuiAgreeService != ""'>
+ 				AND cui.CUI_AGREE_SERVICE like concat('%',#{cuiAgreeService},'%')
+			</if>
+			<if test='cuiAgreeServicedat != null and cuiAgreeServicedat != ""'>
+ 				AND cui.CUI_AGREE_SERVICEDAT like concat('%',#{cuiAgreeServicedat},'%')
+			</if>
+			<if test='cuiAgreePrivate != null and cuiAgreePrivate != ""'>
+ 				AND cui.CUI_AGREE_PRIVATE like concat('%',#{cuiAgreePrivate},'%')
+			</if>
+			<if test='cuiAgreePrivatedat != null and cuiAgreePrivatedat != ""'>
+ 				AND cui.CUI_AGREE_PRIVATEDAT like concat('%',#{cuiAgreePrivatedat},'%')
+			</if>
+			<if test='cuiConfigReply != null and cuiConfigReply != ""'>
+ 				AND cui.CUI_CONFIG_REPLY like concat('%',#{cuiConfigReply},'%')
+			</if>
+			<if test='cuiConfigNoti != null and cuiConfigNoti != ""'>
+ 				AND cui.CUI_CONFIG_NOTI like concat('%',#{cuiConfigNoti},'%')
+			</if>
+			<if test='cuiConfigEvent != null and cuiConfigEvent != ""'>
+ 				AND cui.CUI_CONFIG_EVENT like concat('%',#{cuiConfigEvent},'%')
+			</if>
+			<if test='cuiConfigPoint != null and cuiConfigPoint != ""'>
+ 				AND cui.CUI_CONFIG_POINT like concat('%',#{cuiConfigPoint},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cui.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cui.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cui.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cui.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cui.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cui.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cui.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCUI" resultType="cui">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_INFO cui 
+		WHERE CUI_NUM = #{cuiNum}
+	</select>
+	<insert id="insertCUI" useGeneratedKeys="true" keyProperty="cuiNum" keyColumn="CUI_NUM">
+		INSERT INTO CUSTOMER_INFO	
+		(
+ 			<if test="cuiName != null and cuiName != '' ">  CUI_NAME,</if>
+			<if test="cuiNickname != null and cuiNickname != '' ">  CUI_NICKNAME,</if>
+			<if test="cuiPhone != null and cuiPhone != '' ">  CUI_PHONE,</if>
+			<if test="cuiTrans != null and cuiTrans != '' ">  CUI_TRANS,</if>
+			<if test="cuiBirth != null and cuiBirth != '' ">  CUI_BIRTH,</if>
+			<if test="cuiProfileimgName != null and cuiProfileimgName != '' ">  CUI_PROFILEIMG_NAME,</if>
+			<if test="cuiAgreeLocation != null and cuiAgreeLocation != '' ">  CUI_AGREE_LOCATION,</if>
+			<if test="cuiAgreeLocationdat != null and cuiAgreeLocationdat != '' ">  CUI_AGREE_LOCATIONDAT,</if>
+			<if test="cuiAgreePhone != null and cuiAgreePhone != '' ">  CUI_AGREE_PHONE,</if>
+			<if test="cuiAgreePhonedat != null and cuiAgreePhonedat != '' ">  CUI_AGREE_PHONEDAT,</if>
+			<if test="cuiAgreeCamera != null and cuiAgreeCamera != '' ">  CUI_AGREE_CAMERA,</if>
+			<if test="cuiAgreeCameradat != null and cuiAgreeCameradat != '' ">  CUI_AGREE_CAMERADAT,</if>
+			<if test="cuiAgreePush != null and cuiAgreePush != '' ">  CUI_AGREE_PUSH,</if>
+			<if test="cuiAgreePushdat != null and cuiAgreePushdat != '' ">  CUI_AGREE_PUSHDAT,</if>
+			<if test="cuiAgreeSms != null and cuiAgreeSms != '' ">  CUI_AGREE_SMS,</if>
+			<if test="cuiAgreeSmsdat != null and cuiAgreeSmsdat != '' ">  CUI_AGREE_SMSDAT,</if>
+			<if test="cuiAgreeEmail != null and cuiAgreeEmail != '' ">  CUI_AGREE_EMAIL,</if>
+			<if test="cuiAgreeEmaildat != null and cuiAgreeEmaildat != '' ">  CUI_AGREE_EMAILDAT,</if>
+			<if test="cuiAgreeService != null and cuiAgreeService != '' ">  CUI_AGREE_SERVICE,</if>
+			<if test="cuiAgreeServicedat != null and cuiAgreeServicedat != '' ">  CUI_AGREE_SERVICEDAT,</if>
+			<if test="cuiAgreePrivate != null and cuiAgreePrivate != '' ">  CUI_AGREE_PRIVATE,</if>
+			<if test="cuiAgreePrivatedat != null and cuiAgreePrivatedat != '' ">  CUI_AGREE_PRIVATEDAT,</if>
+			<if test="cuiConfigReply != null and cuiConfigReply != '' ">  CUI_CONFIG_REPLY,</if>
+			<if test="cuiConfigNoti != null and cuiConfigNoti != '' ">  CUI_CONFIG_NOTI,</if>
+			<if test="cuiConfigEvent != null and cuiConfigEvent != '' ">  CUI_CONFIG_EVENT,</if>
+			<if test="cuiConfigPoint != null and cuiConfigPoint != '' ">  CUI_CONFIG_POINT,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CREDAT,	CRETIM,	CREUSR,
+	MODDAT,	MODTIM,	MODUSR,)
+		VALUES(
+ 			<if test="cuiName != null and cuiName != '' ">  #{cuiName},</if>
+			<if test="cuiNickname != null and cuiNickname != '' ">  #{cuiNickname},</if>
+			<if test="cuiPhone != null and cuiPhone != '' ">  #{cuiPhone},</if>
+			<if test="cuiTrans != null and cuiTrans != '' ">  #{cuiTrans},</if>
+			<if test="cuiBirth != null and cuiBirth != '' ">  #{cuiBirth},</if>
+			<if test="cuiProfileimgName != null and cuiProfileimgName != '' ">  #{cuiProfileimgName},</if>
+			<if test="cuiAgreeLocation != null and cuiAgreeLocation != '' ">  #{cuiAgreeLocation},</if>
+			<if test="cuiAgreeLocationdat != null and cuiAgreeLocationdat != '' ">  #{cuiAgreeLocationdat},</if>
+			<if test="cuiAgreePhone != null and cuiAgreePhone != '' ">  #{cuiAgreePhone},</if>
+			<if test="cuiAgreePhonedat != null and cuiAgreePhonedat != '' ">  #{cuiAgreePhonedat},</if>
+			<if test="cuiAgreeCamera != null and cuiAgreeCamera != '' ">  #{cuiAgreeCamera},</if>
+			<if test="cuiAgreeCameradat != null and cuiAgreeCameradat != '' ">  #{cuiAgreeCameradat},</if>
+			<if test="cuiAgreePush != null and cuiAgreePush != '' ">  #{cuiAgreePush},</if>
+			<if test="cuiAgreePushdat != null and cuiAgreePushdat != '' ">  #{cuiAgreePushdat},</if>
+			<if test="cuiAgreeSms != null and cuiAgreeSms != '' ">  #{cuiAgreeSms},</if>
+			<if test="cuiAgreeSmsdat != null and cuiAgreeSmsdat != '' ">  #{cuiAgreeSmsdat},</if>
+			<if test="cuiAgreeEmail != null and cuiAgreeEmail != '' ">  #{cuiAgreeEmail},</if>
+			<if test="cuiAgreeEmaildat != null and cuiAgreeEmaildat != '' ">  #{cuiAgreeEmaildat},</if>
+			<if test="cuiAgreeService != null and cuiAgreeService != '' ">  #{cuiAgreeService},</if>
+			<if test="cuiAgreeServicedat != null and cuiAgreeServicedat != '' ">  #{cuiAgreeServicedat},</if>
+			<if test="cuiAgreePrivate != null and cuiAgreePrivate != '' ">  #{cuiAgreePrivate},</if>
+			<if test="cuiAgreePrivatedat != null and cuiAgreePrivatedat != '' ">  #{cuiAgreePrivatedat},</if>
+			<if test="cuiConfigReply != null and cuiConfigReply != '' ">  #{cuiConfigReply},</if>
+			<if test="cuiConfigNoti != null and cuiConfigNoti != '' ">  #{cuiConfigNoti},</if>
+			<if test="cuiConfigEvent != null and cuiConfigEvent != '' ">  #{cuiConfigEvent},</if>
+			<if test="cuiConfigPoint != null and cuiConfigPoint != '' ">  #{cuiConfigPoint},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{creusr},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		#{modusr},)
+	</insert>
+	
+	<update id="updateCUI">
+		UPDATE CUSTOMER_INFO cui 
+		<set>
+			<if test="cuiName != null and cuiName != '' ">  CUI_NAME = #{cuiName},</if>
+			<if test="cuiNickname != null and cuiNickname != '' ">  CUI_NICKNAME = #{cuiNickname},</if>
+			<if test="cuiPhone != null and cuiPhone != '' ">  CUI_PHONE = #{cuiPhone},</if>
+			<if test="cuiTrans != null and cuiTrans != '' ">  CUI_TRANS = #{cuiTrans},</if>
+			<if test="cuiBirth != null and cuiBirth != '' ">  CUI_BIRTH = #{cuiBirth},</if>
+			<if test="cuiProfileimgName != null and cuiProfileimgName != '' ">  CUI_PROFILEIMG_NAME = #{cuiProfileimgName},</if>
+			<if test="cuiAgreeLocation != null and cuiAgreeLocation != '' ">  CUI_AGREE_LOCATION = #{cuiAgreeLocation},</if>
+			<if test="cuiAgreeLocationdat != null and cuiAgreeLocationdat != '' ">  CUI_AGREE_LOCATIONDAT = #{cuiAgreeLocationdat},</if>
+			<if test="cuiAgreePhone != null and cuiAgreePhone != '' ">  CUI_AGREE_PHONE = #{cuiAgreePhone},</if>
+			<if test="cuiAgreePhonedat != null and cuiAgreePhonedat != '' ">  CUI_AGREE_PHONEDAT = #{cuiAgreePhonedat},</if>
+			<if test="cuiAgreeCamera != null and cuiAgreeCamera != '' ">  CUI_AGREE_CAMERA = #{cuiAgreeCamera},</if>
+			<if test="cuiAgreeCameradat != null and cuiAgreeCameradat != '' ">  CUI_AGREE_CAMERADAT = #{cuiAgreeCameradat},</if>
+			<if test="cuiAgreePush != null and cuiAgreePush != '' ">  CUI_AGREE_PUSH = #{cuiAgreePush},</if>
+			<if test="cuiAgreePushdat != null and cuiAgreePushdat != '' ">  CUI_AGREE_PUSHDAT = #{cuiAgreePushdat},</if>
+			<if test="cuiAgreeSms != null and cuiAgreeSms != '' ">  CUI_AGREE_SMS = #{cuiAgreeSms},</if>
+			<if test="cuiAgreeSmsdat != null and cuiAgreeSmsdat != '' ">  CUI_AGREE_SMSDAT = #{cuiAgreeSmsdat},</if>
+			<if test="cuiAgreeEmail != null and cuiAgreeEmail != '' ">  CUI_AGREE_EMAIL = #{cuiAgreeEmail},</if>
+			<if test="cuiAgreeEmaildat != null and cuiAgreeEmaildat != '' ">  CUI_AGREE_EMAILDAT = #{cuiAgreeEmaildat},</if>
+			<if test="cuiAgreeService != null and cuiAgreeService != '' ">  CUI_AGREE_SERVICE = #{cuiAgreeService},</if>
+			<if test="cuiAgreeServicedat != null and cuiAgreeServicedat != '' ">  CUI_AGREE_SERVICEDAT = #{cuiAgreeServicedat},</if>
+			<if test="cuiAgreePrivate != null and cuiAgreePrivate != '' ">  CUI_AGREE_PRIVATE = #{cuiAgreePrivate},</if>
+			<if test="cuiAgreePrivatedat != null and cuiAgreePrivatedat != '' ">  CUI_AGREE_PRIVATEDAT = #{cuiAgreePrivatedat},</if>
+			<if test="cuiConfigReply != null and cuiConfigReply != '' ">  CUI_CONFIG_REPLY = #{cuiConfigReply},</if>
+			<if test="cuiConfigNoti != null and cuiConfigNoti != '' ">  CUI_CONFIG_NOTI = #{cuiConfigNoti},</if>
+			<if test="cuiConfigEvent != null and cuiConfigEvent != '' ">  CUI_CONFIG_EVENT = #{cuiConfigEvent},</if>
+			<if test="cuiConfigPoint != null and cuiConfigPoint != '' ">  CUI_CONFIG_POINT = #{cuiConfigPoint},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cui.CUI_NUM  = #{cuiNum}
+	</update>
+	
+	<delete id="deleteCUI">
+		UPDATE CUSTOMER_INFO	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CUI_NUM  = #{cuiNum}
+	</delete>
+</mapper>

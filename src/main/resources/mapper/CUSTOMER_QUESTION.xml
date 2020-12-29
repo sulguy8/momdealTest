@@ -1,0 +1,125 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerQuestionMapper">
+	<sql id="selectColumns">
+		cuq.CUQ_NUM,		cuq.CUI_NUM,		cuq.CUQ_TYPE,		cuq.CUQ_CATEGORY,		cuq.CUQ_CONTENT,		cuq.CUQ_ANSWER
+,		cuq.CUQ_ANSWER_DATE,		cuq.CUQ_ANSWER_TIME,		DATE_FORMAT(cuq.CREDAT,'%Y-%m-%d') AS CREDAT,		TIME_FORMAT(cuq.CRETIM,'%H:%i:%S') AS CRETIM,		cuq.CREUSR
+,		DATE_FORMAT(cuq.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cuq.MODTIM,'%H:%i:%S') AS MODTIM,		cuq.MODUSR,		cuq.ACTIVE	
+	</sql>
+	<select id="selectCUQList" resultType="cuq">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_QUESTION cuq 		
+		<where>
+			<if test='cuqNum != null and cuqNum != ""'>
+ 				AND cuq.CUQ_NUM like concat('%',#{cuqNum},'%')
+			</if>
+			<if test='cuiNum != null and cuiNum != ""'>
+ 				AND cuq.CUI_NUM = #{cuiNum}
+			</if>
+			<if test='cuqType != null and cuqType != ""'>
+ 				AND cuq.CUQ_TYPE like concat('%',#{cuqType},'%')
+			</if>
+			<if test='cuqCategory != null and cuqCategory != ""'>
+ 				AND cuq.CUQ_CATEGORY like concat('%',#{cuqCategory},'%')
+			</if>
+			<if test='cuqContent != null and cuqContent != ""'>
+ 				AND cuq.CUQ_CONTENT like concat('%',#{cuqContent},'%')
+			</if>
+			<if test='cuqAnswer != null and cuqAnswer != ""'>
+ 				AND cuq.CUQ_ANSWER like concat('%',#{cuqAnswer},'%')
+			</if>
+			<if test='cuqAnswerDate != null and cuqAnswerDate != ""'>
+ 				AND cuq.CUQ_ANSWER_DATE like concat('%',#{cuqAnswerDate},'%')
+			</if>
+			<if test='cuqAnswerTime != null and cuqAnswerTime != ""'>
+ 				AND cuq.CUQ_ANSWER_TIME like concat('%',#{cuqAnswerTime},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cuq.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cuq.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cuq.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cuq.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cuq.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cuq.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cuq.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCUQ" resultType="cuq">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_QUESTION cuq 
+		WHERE CUQ_NUM = #{cuqNum}
+	</select>
+	<insert id="insertCUQ" useGeneratedKeys="true" keyProperty="cuqNum" keyColumn="CUQ_NUM">
+		INSERT INTO CUSTOMER_QUESTION	
+		(
+ 			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM,</if>
+			<if test="cuqAnswer != null and cuqAnswer != '' ">  CUQ_ANSWER,</if>
+			<if test="cuqAnswerDate != null and cuqAnswerDate != '' ">  CUQ_ANSWER_DATE,</if>
+			<if test="cuqAnswerTime != null and cuqAnswerTime != '' ">  CUQ_ANSWER_TIME,</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CUQ_TYPE,
+	CUQ_CATEGORY,
+	CUQ_CONTENT,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="cuiNum != null and cuiNum != '' ">  #{cuiNum},</if>
+			<if test="cuqAnswer != null and cuqAnswer != '' ">  #{cuqAnswer},</if>
+			<if test="cuqAnswerDate != null and cuqAnswerDate != '' ">  #{cuqAnswerDate},</if>
+			<if test="cuqAnswerTime != null and cuqAnswerTime != '' ">  #{cuqAnswerTime},</if>
+			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cuqType},
+		#{cuqCategory},
+		#{cuqContent},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCUQ">
+		UPDATE CUSTOMER_QUESTION cuq 
+		<set>
+			<if test="cuiNum != null and cuiNum != '' ">  CUI_NUM = #{cuiNum},</if>
+			<if test="cuqType != null and cuqType != '' ">  CUQ_TYPE = #{cuqType},</if>
+			<if test="cuqCategory != null and cuqCategory != '' ">  CUQ_CATEGORY = #{cuqCategory},</if>
+			<if test="cuqContent != null and cuqContent != '' ">  CUQ_CONTENT = #{cuqContent},</if>
+			<if test="cuqAnswer != null and cuqAnswer != '' ">  CUQ_ANSWER = #{cuqAnswer},</if>
+			<if test="cuqAnswerDate != null and cuqAnswerDate != '' ">  CUQ_ANSWER_DATE = #{cuqAnswerDate},</if>
+			<if test="cuqAnswerTime != null and cuqAnswerTime != '' ">  CUQ_ANSWER_TIME = #{cuqAnswerTime},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cuq.CUQ_NUM  = #{cuqNum}
+	</update>
+	
+	<delete id="deleteCUQ">
+		UPDATE CUSTOMER_QUESTION	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CUQ_NUM  = #{cuqNum}
+	</delete>
+</mapper>

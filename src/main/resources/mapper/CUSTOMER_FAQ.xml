@@ -1,0 +1,107 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.momdeal.mapper.CustomerFaqMapper">
+	<sql id="selectColumns">
+		cuf.CUF_NUM,		cuf.CUF_TYPE,		cuf.CUF_CATEGORY,		cuf.CUF_TITLE,		cuf.CUF_CONTENT,		DATE_FORMAT(cuf.CREDAT,'%Y-%m-%d') AS CREDAT
+,		TIME_FORMAT(cuf.CRETIM,'%H:%i:%S') AS CRETIM,		cuf.CREUSR,		DATE_FORMAT(cuf.MODDAT,'%Y-%m-%d') AS MODDAT,		TIME_FORMAT(cuf.MODTIM,'%H:%i:%S') AS MODTIM,		cuf.MODUSR
+,		cuf.ACTIVE	
+	</sql>
+	<select id="selectCUFList" resultType="cuf">
+		SELECT <include refid="selectColumns"></include> FROM
+		CUSTOMER_FAQ cuf 		
+		<where>
+			<if test='cufNum != null and cufNum != ""'>
+ 				AND cuf.CUF_NUM like concat('%',#{cufNum},'%')
+			</if>
+			<if test='cufType != null and cufType != ""'>
+ 				AND cuf.CUF_TYPE like concat('%',#{cufType},'%')
+			</if>
+			<if test='cufCategory != null and cufCategory != ""'>
+ 				AND cuf.CUF_CATEGORY like concat('%',#{cufCategory},'%')
+			</if>
+			<if test='cufTitle != null and cufTitle != ""'>
+ 				AND cuf.CUF_TITLE like concat('%',#{cufTitle},'%')
+			</if>
+			<if test='cufContent != null and cufContent != ""'>
+ 				AND cuf.CUF_CONTENT like concat('%',#{cufContent},'%')
+			</if>
+			<if test='credat != null and credat != ""'>
+ 				AND cuf.CREDAT like concat('%',replace(#{credat},'-',''),'%')
+			</if>
+			<if test='cretim != null and cretim != ""'>
+ 				AND cuf.CRETIM like concat('%',#{cretim},'%')
+			</if>
+			<if test='creusr != null and creusr != ""'>
+ 				AND cuf.CREUSR = #{creusr}
+			</if>
+			<if test='moddat != null and moddat != ""'>
+ 				AND cuf.MODDAT like concat('%',replace(#{moddat},'-',''),'%')
+			</if>
+			<if test='modtim != null and modtim != ""'>
+ 				AND cuf.MODTIM like concat('%',#{modtim},'%')
+			</if>
+			<if test='modusr != null and modusr != ""'>
+ 				AND cuf.MODUSR = #{modusr}
+			</if>
+			<if test='active != null and active != ""'>
+ 				AND cuf.ACTIVE like concat('%',#{active},'%')
+			</if>
+		</where>
+		<trim prefix="order by">
+	    	<if test="orders!=null">
+	    		${orders}
+	    	</if>
+	    </trim>
+	    
+	</select>
+	<select id="selectCUF" resultType="cuf">
+		SELECT <include refid="selectColumns"></include> FROM CUSTOMER_FAQ cuf 
+		WHERE CUF_NUM = #{cufNum}
+	</select>
+	<insert id="insertCUF" useGeneratedKeys="true" keyProperty="cufNum" keyColumn="CUF_NUM">
+		INSERT INTO CUSTOMER_FAQ	
+		(
+ 			<if test="creusr != null and creusr != '' ">  CREUSR,</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR,</if>
+			<if test="active != null and active != '' ">  ACTIVE,</if>
+	CUF_TYPE,
+	CUF_CATEGORY,
+	CUF_TITLE,
+	CUF_CONTENT,
+	CREDAT,	CRETIM,	MODDAT,	MODTIM)
+		VALUES(
+ 			<if test="creusr != null and creusr != '' ">  #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  #{modusr},</if>
+			<if test="active != null and active != '' ">  #{active},</if>
+		#{cufType},
+		#{cufCategory},
+		#{cufTitle},
+		#{cufContent},
+		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'),		DATE_FORMAT(NOW(),'%Y%m%d'),		DATE_FORMAT(NOW(),'%H%i%S'))
+	</insert>
+	
+	<update id="updateCUF">
+		UPDATE CUSTOMER_FAQ cuf 
+		<set>
+			<if test="cufType != null and cufType != '' ">  CUF_TYPE = #{cufType},</if>
+			<if test="cufCategory != null and cufCategory != '' ">  CUF_CATEGORY = #{cufCategory},</if>
+			<if test="cufTitle != null and cufTitle != '' ">  CUF_TITLE = #{cufTitle},</if>
+			<if test="cufContent != null and cufContent != '' ">  CUF_CONTENT = #{cufContent},</if>
+			<if test="creusr != null and creusr != '' ">  CREUSR = #{creusr},</if>
+			<if test="modusr != null and modusr != '' ">  MODUSR = #{modusr},</if>
+			<if test="active != null and active != '' ">  ACTIVE = #{active},</if>
+			MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+			MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		</set>
+		WHERE  cuf.CUF_NUM  = #{cufNum}
+	</update>
+	
+	<delete id="deleteCUF">
+		UPDATE CUSTOMER_FAQ	
+		SET ACTIVE=0,
+		MODDAT = DATE_FORMAT(NOW(),'%Y%m%d'),
+		MODTIM = DATE_FORMAT(NOW(),'%H%i%S')
+		WHERE  CUF_NUM  = #{cufNum}
+	</delete>
+</mapper>
